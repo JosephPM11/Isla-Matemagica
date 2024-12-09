@@ -697,7 +697,6 @@ void batalla_s1(){
 			*p_exp+=aumento_exp;
 			cout<<"\n";
 			system("pause");
-			modo_campana_opc_1();
 		}
 		else{
 			srand(time(NULL));
@@ -718,7 +717,6 @@ void batalla_s1(){
 			*p_exp+=aumento_exp;
 			cout<<"\n";
 			system("pause");
-			modo_campana_opc_1();
 		}
 	}
 	else{
@@ -728,7 +726,6 @@ void batalla_s1(){
 			cout<<"\n";
 			//Poner que has perdido monedas
 			system("pause");
-			modo_campana_opc_1();
 		}
 	}
 }
@@ -802,7 +799,6 @@ void batallas_s1(int num_batalla,int color,int& vida_jugador,int& dinero,int& su
 		default: cout<<"Fuera de rango"; break;
 	}
 	batalla_s1();
-	
 	//Pasando valores finales al paso por parametros
 	dinero=*p_dinero;
 	suexp=*p_exp;

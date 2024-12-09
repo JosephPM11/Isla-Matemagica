@@ -340,7 +340,6 @@ void batalla_s2(){
 			*p_exp+=aumento_exp;
 			cout<<"\n";
 			system("pause");
-			modo_campana_opc_2();
 		}
 		else{
 			srand(time(NULL));
@@ -361,7 +360,6 @@ void batalla_s2(){
 			*p_exp+=aumento_exp;
 			cout<<"\n";
 			system("pause");
-			modo_campana_opc_2();
 		}
 	}
 	else{
@@ -371,7 +369,6 @@ void batalla_s2(){
 			cout<<"\n";
 			//Poner que has perdido monedas
 			system("pause");
-			modo_campana_opc_2();
 		}
 	}
 }
