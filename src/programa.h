@@ -53,12 +53,6 @@ const int BACKGROUND_CYAN = BACKGROUND_BLUE | BACKGROUND_GREEN;
 
 void menu();
 
-//FUNCION COLOR DE FONDO Y TEXTO
-void setColor(int textColor) {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, BACKGROUND_CYAN | textColor);
-}
-
 // Función para fondo (Para evitar error de que no se coloree todo)
 void fillConsoleBackground(int backgroundColor) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -811,10 +805,10 @@ void perfil(){
 		//cout<<"\t       Ataque: "<<*exp<<"/2000"<<endl;
 		
 		switch(*avatar){
-			case 0: avatar0();break;
-			case 1: avatar1();break;
-			case 2: avatar2();break;
-			case 3: avatar3();break;
+			case 0: avatar0(7,13);break;
+			case 1: avatar1(7,13);break;
+			case 2: avatar2(7,13);break;
+			case 3: avatar3(7,13);break;
 			default:cout<<"Fuera de rango";break;
 		}
 
@@ -892,74 +886,12 @@ void obj_tienda_opc_1(){
 	titulo_items_tienda();
 	
 	setColor(FOREGROUND_BLUE);
-	//Pocion de sumas
-	int x=35,y=10;
-	gotoxy(x, y);
-	cout << "_____" << endl;
-	gotoxy(x, y+1);
-    cout << "|___|" << endl;
-    gotoxy(x, y+2);
-    cout << "/   \\" << endl;
-    gotoxy(x-1, y+3);
-    cout << "/ +  +\\" << endl;
-    gotoxy(x-2, y+4);
-    cout << "/   +   \\" << endl;
-    gotoxy(x-3, y+5);
-    cout << "(_________)" << endl;
+	ascii_poci_suma(35,10);
 	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	
-		//Descripción
-	gotoxy(5, 20);
-	cout<<"Pocion de Sumas (20 MONEDAS)"<<endl;
-	gotoxy(5, 22);
-	cout<<"Concentrado matematico en un frasco."<<endl;
-	gotoxy(5, 23);
-	cout<<"Esta pocion curativa devuelve de"<<endl;
-	//Color rosado
-	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	gotoxy(35, 23);
-	cout<<"1 a 3"<<endl;
-	gotoxy(5, 24);
-	cout<<"puntos de vida"<<endl;
-	//Color blanco
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	gotoxy(19, 24);
-	cout<<", canalizando la energía"<<endl;
-	gotoxy(5, 25);
-	cout<<"de las sumas para sanar tus heridas."<<endl;
+	descripcion_poci_suma();//Descripción
 
-	//Poliedro de Poder
-	x=55,y=10;
-	gotoxy(x, y);
-    cout << "_______"<<endl;
-	gotoxy(x-1, y+1);
-    cout << "/\\     /\\"<<endl;
-    gotoxy(x-2, y+2);
-    cout << "/  \\___/  \\"<<endl;
-    gotoxy(x-3, y+3);
-    cout << "/   /   \\   \\"<<endl;
-    gotoxy(x-3, y+4);
-    cout << "\\   \\___/   /"<<endl;
-    gotoxy(x-2, y+5);
-    cout << "\\  /   \\  /"<<endl;
-    gotoxy(x-1, y+6);
-    cout << "\\/_____\\/"<<endl;
-    //Escudo Fractal
-    x=79,y=10;
-	gotoxy(x, y);
-	cout << "*****"<<endl;
-	gotoxy(x-1, y+1);
-    cout << "*     *"<<endl;
-    gotoxy(x-3, y+2);
-    cout << "*   * *   *"<<endl;
-    gotoxy(x-4, y+3);
-    cout << "*  * * * *  *"<<endl;
-    gotoxy(x-3, y+4);
-    cout << "*   * *   *"<<endl;
-    gotoxy(x-1, y+5);
-    cout << "*     *"<<endl;
-    gotoxy(x, y+6);
-    cout << "*****"<<endl;
+	ascii_poli_poder(55,10);
+	ascii_escu_frac(79,10);
 	//Volver al menu (Presiona 0)
 	gotoxy(91, 1);
     cout<< "Volver al menu (Presiona 0)" << endl;
@@ -1020,75 +952,13 @@ void obj_tienda_opc_2(){
 	
 	mesa_tienda();
 	titulo_items_tienda();
-	//Pocion de sumas
-	int x=35,y=11;
-	gotoxy(x, y);
-	cout << "_____" << endl;
-	gotoxy(x, y+1);
-    cout << "|___|" << endl;
-    gotoxy(x, y+2);
-    cout << "/   \\" << endl;
-    gotoxy(x-1, y+3);
-    cout << "/ +  +\\" << endl;
-    gotoxy(x-2, y+4);
-    cout << "/   +   \\" << endl;
-    gotoxy(x-3, y+5);
-    cout << "(_________)" << endl;
+	ascii_poci_suma(35,11);
 	setColor(FOREGROUND_BLUE);
-	//Poliedro de Poder
-	x=55,y=9;
-	gotoxy(x, y);
-    cout << "_______"<<endl;
-	gotoxy(x-1, y+1);
-    cout << "/\\     /\\"<<endl;
-    gotoxy(x-2, y+2);
-    cout << "/  \\___/  \\"<<endl;
-    gotoxy(x-3, y+3);
-    cout << "/   /   \\   \\"<<endl;
-    gotoxy(x-3, y+4);
-    cout << "\\   \\___/   /"<<endl;
-    gotoxy(x-2, y+5);
-    cout << "\\  /   \\  /"<<endl;
-    gotoxy(x-1, y+6);
-    cout << "\\/_____\\/"<<endl;
+	ascii_poli_poder(55,9);
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-    
-    	//Descripción
-	gotoxy(5, 20);
-	cout<<"Poliedro de Poder (40 MONEDAS)"<<endl;
-	gotoxy(5, 22);
-	cout<<"Un poderoso poliedro imbuido de fuerza"<<endl;
-	gotoxy(5, 23);
-	cout<<"magica. Al usarlo,"<<endl;
-	//Color rosado
-	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	gotoxy(22, 23);
-	cout<<" aumenta tu ataque de"<<endl;
-	gotoxy(5, 24);
-	cout<<"1 a 2 puntos"<<endl;
-	//Color blanco
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	gotoxy(18, 24);
-	cout<<"liberando su energia geometrica"<<endl;
-	gotoxy(5, 25);
-	cout<<"para fortalecer tus ataques."<<endl;
+	descripcion_poli_poder();
 
-    //Escudo Fractal
-    x=79,y=10;
-	gotoxy(x, y);
-	cout << "*****"<<endl;
-	gotoxy(x-1, y+1);
-    cout << "*     *"<<endl;
-    gotoxy(x-3, y+2);
-    cout << "*   * *   *"<<endl;
-    gotoxy(x-4, y+3);
-    cout << "*  * * * *  *"<<endl;
-    gotoxy(x-3, y+4);
-    cout << "*   * *   *"<<endl;
-    gotoxy(x-1, y+5);
-    cout << "*     *"<<endl;
-    gotoxy(x, y+6);
-    cout << "*****"<<endl;
+	ascii_escu_frac(79,10);
 	//Volver al menu (Presiona 0)
 	gotoxy(91, 1);
     cout<< "Volver al menu (Presiona 0)" << endl;
@@ -1149,74 +1019,14 @@ void obj_tienda_opc_3(){
 	
 	mesa_tienda();
 	titulo_items_tienda();
-	//Pocion de sumas
-	int x=35,y=11;
-	gotoxy(x, y);
-	cout << "_____" << endl;
-	gotoxy(x, y+1);
-    cout << "|___|" << endl;
-    gotoxy(x, y+2);
-    cout << "/   \\" << endl;
-    gotoxy(x-1, y+3);
-    cout << "/ +  +\\" << endl;
-    gotoxy(x-2, y+4);
-    cout << "/   +   \\" << endl;
-    gotoxy(x-3, y+5);
-    cout << "(_________)" << endl;
-	//Poliedro de Poder
-	x=55,y=10;
-	gotoxy(x, y);
-    cout << "_______"<<endl;
-	gotoxy(x-1, y+1);
-    cout << "/\\     /\\"<<endl;
-    gotoxy(x-2, y+2);
-    cout << "/  \\___/  \\"<<endl;
-    gotoxy(x-3, y+3);
-    cout << "/   /   \\   \\"<<endl;
-    gotoxy(x-3, y+4);
-    cout << "\\   \\___/   /"<<endl;
-    gotoxy(x-2, y+5);
-    cout << "\\  /   \\  /"<<endl;
-    gotoxy(x-1, y+6);
-    cout << "\\/_____\\/"<<endl;
+	ascii_poci_suma(35,11);
+	ascii_poli_poder(55,10);
+
     setColor(FOREGROUND_BLUE);
     //Escudo Fractal
-    x=79,y=9;
-	gotoxy(x, y);
-	cout << "*****"<<endl;
-	gotoxy(x-1, y+1);
-    cout << "*     *"<<endl;
-    gotoxy(x-3, y+2);
-    cout << "*   * *   *"<<endl;
-    gotoxy(x-4, y+3);
-    cout << "*  * * * *  *"<<endl;
-    gotoxy(x-3, y+4);
-    cout << "*   * *   *"<<endl;
-    gotoxy(x-1, y+5);
-    cout << "*     *"<<endl;
-    gotoxy(x, y+6);
-    cout << "*****"<<endl;
+	ascii_escu_frac(79,9);
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-    
-    //Descripción
-	gotoxy(5, 20);
-	cout<<"Escudo Fractal (30 MONEDAS)"<<endl;
-    gotoxy(5, 22);
-    cout<<"Un escudo mistico con patrones infinitos."<<endl;
-	gotoxy(5, 23);
-	cout<<"Al usarlo,"<<endl;
-	//Color rosado
-	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	gotoxy(16, 23);
-	cout<<"te protege del ataque enemigo"<<endl;
-	gotoxy(5, 24);
-	cout<<"por 1 o 2 turnos"<<endl;
-	//Color blanco
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	gotoxy(21, 24);
-	cout<<", utilizando la complejidad"<<endl;
-	gotoxy(5, 25);
-	cout<<"de los fractales para desviar los golpes."<<endl;
+    descripcion_escu_frac();
 	
 	//Volver al menu (Presiona 0)
 	gotoxy(91, 1);
@@ -1278,30 +1088,11 @@ void avatar_tienda_opc_1(){
 	
 	mesa_tienda();
 	titulo_avatares_tienda();
-	
+
 	setColor(FOREGROUND_BLUE);
-	//Avatar 1 - Geometra
-	int x=35,y=11;
-	gotoxy(x, y);
-	cout << "(B.B)" << endl;
-    gotoxy(x, y+1);
-    cout << "|) )|" << endl;
-    gotoxy(x, y+2);
-    cout << " ) ) " << endl;
-    gotoxy(x, y+3);
-    cout << " | | " << endl;
+	avatar1(35,11);
 	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	//Descripción
-	gotoxy(5, 20);
-	cout<<"Geometra (1000 MONEDAS)"<<endl;
-	gotoxy(5, 22);
-	cout<<"Tu destreza en combate basada en principios"<<endl;
-	gotoxy(5, 23);
-	cout<<"matematicos aumenta tu salud y fuerza,"<<endl;
-	gotoxy(5, 24);
-	cout<<"pero tu habilidad para hacer magia se"<<endl;
-	gotoxy(5, 25);
-	cout<<"reduce debido a tu enfoque en la fuerza bruta."<<endl;
+	descripcion_avatar1();
 	//Color rosado
 	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	gotoxy(5, 27);
@@ -1310,28 +1101,8 @@ void avatar_tienda_opc_1(){
 	cout<<"+5 ataque                          -2 pt habilidad"<<endl;
 	//Color blanco
 	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
-	//Avatar 2 - Numeromante
-    x=56,y=12;
-	gotoxy(x, y);
-	cout << "(V.V)" << endl;
-    gotoxy(x, y+1);
-    cout << "|) )|" << endl;
-    gotoxy(x, y+2);
-    cout << " ) ) " << endl;
-    gotoxy(x, y+3);
-    cout << " | | " << endl;
-    
-    //Avatar 3 - Teoremagista
-    x=79,y=12;
-	gotoxy(x, y);
-	cout << "(UwU)" << endl;
-    gotoxy(x, y+1);
-    cout << "|) )|" << endl;
-    gotoxy(x, y+2);
-    cout << " ) ) " << endl;
-    gotoxy(x, y+3);
-    cout << " | | " << endl;
+	avatar2(56,12);
+	avatar3(79,12);
 	//Volver al menu (Presiona 0)
 	gotoxy(91, 1);
     cout<< "Volver al menu (Presiona 0)" << endl;
@@ -1389,43 +1160,14 @@ void avatar_tienda_opc_2(){
 	} else{
 		cout<< "Dinero: "<<*dinero<<" monedas"<<endl;
 	}
-	
 	mesa_tienda();
 	titulo_avatares_tienda();
-	//Avatar 1 - Geometra
-	int x=35,y=12;
-	gotoxy(x, y);
-	cout << "(B.B)" << endl;
-    gotoxy(x, y+1);
-    cout << "|) )|" << endl;
-    gotoxy(x, y+2);
-    cout << " ) ) " << endl;
-    gotoxy(x, y+3);
-    cout << " | | " << endl;
 
+	avatar1(35,12);
 	setColor(FOREGROUND_BLUE);
-	//Avatar 2 - Numeromante
-    x=56,y=11;
-	gotoxy(x, y);
-	cout << "(V.V)" << endl;
-    gotoxy(x, y+1);
-    cout << "|) )|" << endl;
-    gotoxy(x, y+2);
-    cout << " ) ) " << endl;
-    gotoxy(x, y+3);
-    cout << " | | " << endl;
+	avatar2(56,11);
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		//Descripción
-	gotoxy(5, 20);
-	cout<<"Numeromante (1000 MONEDAS)"<<endl;
-	gotoxy(5, 22);
-	cout<<"Tu conexion con la magia curativa aumenta"<<endl;
-	gotoxy(5, 23);
-	cout<<"grandemente tu salud, pero tu fuerza y"<<endl;
-	gotoxy(5, 24);
-	cout<<"habilidad para otras magias se reducen"<<endl;
-	gotoxy(5, 25);
-	cout<<"debido a tu enfoque en la proteccion."<<endl;
+	descripcion_avatar2();
 	//Color rosado
 	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	gotoxy(5, 27);
@@ -1435,16 +1177,7 @@ void avatar_tienda_opc_2(){
 	//Color blanco
 	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
-    //Avatar 3 - Teoremagista
-    x=79,y=12;
-	gotoxy(x, y);
-	cout << "(UwU)" << endl;
-    gotoxy(x, y+1);
-    cout << "|) )|" << endl;
-    gotoxy(x, y+2);
-    cout << " ) ) " << endl;
-    gotoxy(x, y+3);
-    cout << " | | " << endl;
+	avatar3(79,12);
 	//Volver al menu (Presiona 0)
 	gotoxy(91, 1);
     cout<< "Volver al menu (Presiona 0)" << endl;
@@ -1505,51 +1238,14 @@ void avatar_tienda_opc_3(){
 	
 	mesa_tienda();
 	titulo_avatares_tienda();
-	//Avatar 1 - Geometra
-	int x=35,y=12;
-	gotoxy(x, y);
-	cout << "(B.B)" << endl;
-    gotoxy(x, y+1);
-    cout << "|) )|" << endl;
-    gotoxy(x, y+2);
-    cout << " ) ) " << endl;
-    gotoxy(x, y+3);
-    cout << " | | " << endl;
-	//Avatar 2 - Numeromante
-    x=56,y=12;
-	gotoxy(x, y);
-	cout << "(V.V)" << endl;
-    gotoxy(x, y+1);
-    cout << "|) )|" << endl;
-    gotoxy(x, y+2);
-    cout << " ) ) " << endl;
-    gotoxy(x, y+3);
-    cout << " | | " << endl;
+	avatar1(35,12);
+	avatar2(56,12);
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
  
 	setColor(FOREGROUND_BLUE);
-    //Avatar 3 - Teoremagista
-    x=79,y=11;
-	gotoxy(x, y);
-	cout << "(UwU)" << endl;
-    gotoxy(x, y+1);
-    cout << "|) )|" << endl;
-    gotoxy(x, y+2);
-    cout << " ) ) " << endl;
-    gotoxy(x, y+3);
-    cout << " | | " << endl;
+	avatar3(79,11);
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		//Descripción
-	gotoxy(5, 20);
-	cout<<"Teoremagista (1000 MONEDAS)"<<endl;
-	gotoxy(5, 22);
-	cout<<"Tu dominio de los teoremas magicos incrementa"<<endl;
-	gotoxy(5, 23);
-	cout<<"tu habilidad magica, aunque tu salud y"<<endl;
-	gotoxy(5, 24);
-	cout<<"fuerza fisica se ven reducidas debido a"<<endl;
-	gotoxy(5, 25);
-	cout<<"la dedicacion a tus estudios."<<endl;
+	descripcion_avatar3();
 	//Color rosado
 	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	gotoxy(5, 27);

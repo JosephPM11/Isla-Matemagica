@@ -12,6 +12,12 @@ void gotoxy(int x, int y){
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+//FUNCION COLOR DE FONDO Y TEXTO
+void setColor(int textColor) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, BACKGROUND_CYAN | textColor);
+}
+
 //Titulo principal
 void texto_titulo(){
     cout << "\t\t\t\t\t     ______            __           \n";
@@ -208,7 +214,6 @@ void mesa_tienda(){
 	cout<<"|                                                         |                                                            |"<<endl;     
 }
 
-//Titulo Items
 void titulo_items_tienda(){
 	gotoxy(74, 21);
 	cout<<"  ___ _____ ___ __  __ ___ "<<endl;
@@ -220,7 +225,6 @@ void titulo_items_tienda(){
 	cout<<" |___| |_| |___|_|  |_|___/"<<endl;
 }
 
-//Titulo Avatares
 void titulo_avatares_tienda(){
 	gotoxy(71, 21);
 	cout<<"    ___   ___ _____ _   ___ ___ ___ "<<endl;
@@ -233,9 +237,60 @@ void titulo_avatares_tienda(){
 }
 //ASCII TIENDA
 
+//ASCII ITEMS
+void ascii_poci_suma(int x,int y){
+    gotoxy(x, y);
+	cout << "_____" << endl;
+	gotoxy(x, y+1);
+    cout << "|___|" << endl;
+    gotoxy(x, y+2);
+    cout << "/   \\" << endl;
+    gotoxy(x-1, y+3);
+    cout << "/ +  +\\" << endl;
+    gotoxy(x-2, y+4);
+    cout << "/   +   \\" << endl;
+    gotoxy(x-3, y+5);
+    cout << "(_________)" << endl;
+}
+
+void ascii_poli_poder(int x,int y){
+	gotoxy(x, y);
+    cout << "_______"<<endl;
+	gotoxy(x-1, y+1);
+    cout << "/\\     /\\"<<endl;
+    gotoxy(x-2, y+2);
+    cout << "/  \\___/  \\"<<endl;
+    gotoxy(x-3, y+3);
+    cout << "/   /   \\   \\"<<endl;
+    gotoxy(x-3, y+4);
+    cout << "\\   \\___/   /"<<endl;
+    gotoxy(x-2, y+5);
+    cout << "\\  /   \\  /"<<endl;
+    gotoxy(x-1, y+6);
+    cout << "\\/_____\\/"<<endl;
+}
+
+void ascii_escu_frac(int x,int y){
+	gotoxy(x, y);
+	cout << "*****"<<endl;
+	gotoxy(x-1, y+1);
+    cout << "*     *"<<endl;
+    gotoxy(x-3, y+2);
+    cout << "*   * *   *"<<endl;
+    gotoxy(x-4, y+3);
+    cout << "*  * * * *  *"<<endl;
+    gotoxy(x-3, y+4);
+    cout << "*   * *   *"<<endl;
+    gotoxy(x-1, y+5);
+    cout << "*     *"<<endl;
+    gotoxy(x, y+6);
+    cout << "*****"<<endl;
+}
+
+//ASCII ITEMS
+
 // ASCII AVATARES
-void avatar0(){
-	int x=7,y=13;
+void avatar0(int x,int y){
     gotoxy(x,y);
     cout << "(o.o)" << endl;
     gotoxy(x,y+1);
@@ -246,8 +301,7 @@ void avatar0(){
     cout << " | | " << endl;
 }
 
-void avatar1(){
-    int x=7,y=13;
+void avatar1(int x,int y){
     gotoxy(x,y);
     cout << "(B.B)" << endl;
     gotoxy(x,y+1);
@@ -258,8 +312,7 @@ void avatar1(){
     cout << " | | " << endl;
 }
 
-void avatar2(){
-    int x=7,y=13;
+void avatar2(int x,int y){
     gotoxy(x,y);
     cout << "(V.V)" << endl;
     gotoxy(x,y+1);
@@ -270,8 +323,7 @@ void avatar2(){
     cout << " | | " << endl;
 }
 
-void avatar3(){
-    int x=7,y=13;
+void avatar3(int x,int y){
     gotoxy(x,y);
     cout << "(UwU)" << endl;
     gotoxy(x,y+1);
