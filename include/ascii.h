@@ -4,6 +4,9 @@
 #include <iostream>
 using namespace std;
 
+//Color de fondo y texto
+extern const int BACKGROUND_CYAN;
+
 //FUNCION GOTOXY
 void gotoxy(int x, int y){
     COORD coord;
@@ -334,5 +337,33 @@ void avatar3(int x,int y){
     cout << " | | " << endl;
 }
 // ASCII AVATARES
+
+//ASCII BOSSES
+void bossNumerion(){
+		cout<<"\n\t\t\t\t\t\t	 __      __"<<endl;
+		cout<<"\t\t\t\t\t\t       _|||-----|||_"<<endl;
+		cout<<"\t\t\t\t\t\t   __-||| ||||||| |-- __"<<endl;
+		cout<<"\t\t\t\t\t\t  |__| |||*||T||*||| |__|"<<endl;
+}
+
+void bossReyMomonga(){
+    cout << "   o____o   " << endl;
+    cout << "  /v    v\\  " << endl;
+    cout << " />      <\\ " << endl;
+    cout << " \\        / " << endl;
+    cout << "  o______o  " << endl;
+}
+//ASCII BOSSES
+
+//ASCII ENEMIGOS
+void subditoNumerico(){
+    	cout<<"\n\t\t\t\t\t\t\t    ___"<<endl;
+		cout<<"\t\t\t\t\t\t\t    | |"<<endl;
+		cout<<"\t\t\t\t\t\t\t  |||||||"<<endl;
+		cout<<"\t\t\t\t\t\t\t  |||||||"<<endl;
+		cout<<"\t\t\t\t\t\t\t    |||"<<endl;
+		cout<<"\t\t\t\t\t\t\t    |||"<<endl;
+}
+//ASCII ENEMIGOS
 
 #endif

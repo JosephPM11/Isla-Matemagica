@@ -12,7 +12,6 @@
 #include "sector2.h"
 #include "ascii.h"
 #include "textos.h"
-
 using namespace std;
 char usuario[20]; char contrasenha[20];
 

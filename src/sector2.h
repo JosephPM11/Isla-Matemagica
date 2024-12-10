@@ -6,6 +6,8 @@
 #include <time.h>
 #include <string.h>
 #include <windows.h>
+
+#include "ascii.h"
 using namespace std;
 extern char respuesta_c[10];
 
@@ -226,10 +228,7 @@ void enemigo_s2(){
 		setColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
 		cout<<"\n\n\n";   
 		cout<<"\t\t\t\t\t\t Numerion, El felino arcano"<<endl;
-		cout<<"\n\t\t\t\t\t\t	 __      __"<<endl;
-		cout<<"\t\t\t\t\t\t       _|||-----|||_"<<endl;
-		cout<<"\t\t\t\t\t\t   __-||| ||||||| |-- __"<<endl;
-		cout<<"\t\t\t\t\t\t  |__| |||*||T||*||| |__|"<<endl;
+		bossNumerion();
 		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 	else{
@@ -237,12 +236,7 @@ void enemigo_s2(){
 		setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		cout<<"\n\n\n";
 		cout<<"\t\t\t\t\t\t      Subdito numerico"<<endl;
-		cout<<"\n\t\t\t\t\t\t\t    ___"<<endl;
-		cout<<"\t\t\t\t\t\t\t    | |"<<endl;
-		cout<<"\t\t\t\t\t\t\t  |||||||"<<endl;
-		cout<<"\t\t\t\t\t\t\t  |||||||"<<endl;
-		cout<<"\t\t\t\t\t\t\t    |||"<<endl;
-		cout<<"\t\t\t\t\t\t\t    |||"<<endl;
+		subditoNumerico();
 		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 }
