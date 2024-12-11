@@ -31,6 +31,8 @@ extern int *p_cant_ataq_crit,p_dir_cant_ataq_crit;
 //Vida jugador
 extern int *p_vida_jugador,p_dir_vida_jugador;
 		//Vida jugador total(vida() )
+//Huida jugador
+extern int *huida,dir_huida;
 extern int *vida_total_jugador,dir_vida_total_jugador;
 //Vida enemigo
 extern int *p_vida_enemigo,p_dir_vida_enemigo;
@@ -40,7 +42,6 @@ extern int *vida_total_enemigo,dir_vida_total_enemigo;
 int *boss_s2,dir_boss_s2=0;
 
 extern void vida();
-extern void modo_campana_opc_2();
 
 //Funciones de color de fondo
 extern void fillConsoleBackground(int);
@@ -76,7 +77,7 @@ void atacar_s2(){
 		ataque+=*p_ataque_extra;
 		*p_ataque_extra=0;
 		if(*boss_s2==1){
-			cout<<"\n    Has atacado a Numerion. Ha perdido "<<ataque<<" de vida!"<<endl;
+			cout<<"\n    Has atacado a Boss 2. Ha perdido "<<ataque<<" de vida!"<<endl;
 		}
 		else{
 			cout<<"\n    Has atacado al enemigo. Ha perdido "<<ataque<<" de vida!"<<endl;
@@ -139,7 +140,7 @@ void ataque_critico_s2(){
 				ataque+=*p_ataque_extra;
 				*p_ataque_extra=0;
 				if(*boss_s2==1){
-					cout<<"\n    Has atacado a Numerion. Ha perdido "<<ataque<<" de vida!"<<endl;
+					cout<<"\n    Has atacado a Boss 2. Ha perdido "<<ataque<<" de vida!"<<endl;
 				}
 				else{
 					cout<<"\n    Has atacado al enemigo. Ha perdido "<<ataque<<" de vida!"<<endl;
@@ -177,7 +178,7 @@ void ataque_critico_s2(){
 					ataque+=*p_ataque_extra;
 					*p_ataque_extra=0;
 					if(*boss_s2==1){
-						cout<<"\n    Has atacado a Numerion. Ha perdido "<<ataque<<" de vida!"<<endl;
+						cout<<"\n    Has atacado a Boss 2. Ha perdido "<<ataque<<" de vida!"<<endl;
 					}
 					else{
 						cout<<"\n    Has atacado al enemigo. Ha perdido "<<ataque<<" de vida!"<<endl;
@@ -227,7 +228,7 @@ void enemigo_s2(){
 		fillConsoleBackground(BACKGROUND_CYAN);
 		setColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
 		cout<<"\n\n\n";   
-		cout<<"\t\t\t\t\t\t Numerion, El felino arcano"<<endl;
+		cout<<"\t\t\t\t\t\t Boss 2"<<endl;
 		bossNumerion();
 		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
@@ -235,17 +236,11 @@ void enemigo_s2(){
 		fillConsoleBackground(BACKGROUND_CYAN);
 		setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		cout<<"\n\n\n";
-		cout<<"\t\t\t\t\t\t      Subdito numerico"<<endl;
+		cout<<"\t\t\t\t\t\t      Subdito sector 2"<<endl;
 		subditoNumerico();
 		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 }
-
-/*
-GUIARSE CON ESTO PARA PUNTEROS - RECORDAR QUE TAMBIEN SE PONE EN EL MAIN()
-int *fin_s1,*fin_s2,*fin_s3,*fin_s4,*fin_s5;
-int direccion_s1=0,direccion_s2=0,direccion_s3=0,direccion_s4=0,direccion_s5=0;
-*/
 
 void turno_enemigo_s2(){
 	if(*p_proteccion==0){
@@ -254,8 +249,8 @@ void turno_enemigo_s2(){
 			int mayor_ataque = 5;
 			int menor_ataque = 3;
 			int ataque = 1 + rand()% (mayor_ataque + 1 - menor_ataque);
-			cout<<"  -> Es el turno de Numerion"<<endl;
-			cout<<"\n  Numerion te ha atacado inflingiendote "<<ataque<<" de danho"<<endl;
+			cout<<"  -> Es el turno de Boss 2"<<endl;
+			cout<<"\n  Boss 2 te ha atacado inflingiendote "<<ataque<<" de danho"<<endl;
 			cout<<"\n";
 			*p_vida_jugador-=ataque;
 			system("pause");
@@ -296,7 +291,7 @@ void batalla_s2(){
 	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	*p_cant_ataq_crit=2;
 	int turno=0;
-	while((*p_vida_enemigo>0)&&(*p_vida_jugador>0)){
+	while((*p_vida_enemigo>0)&&(*p_vida_jugador>0)&&(*huida==0)){
 		system("CLS");
 		
 		enemigo_s2();
@@ -326,7 +321,7 @@ void batalla_s2(){
 			int aumento_exp = menor_exp + rand()% (mayor_exp + 1 - menor_exp);
 	
 			system("CLS");
-			cout<<"Numerion ha sido derrotado"<<endl;
+			cout<<"Boss 2 ha sido derrotado"<<endl;
 			cout<<"!Has ganado "<<aumento_monedas<<" monedas!"<<endl;
 			*p_dinero+=aumento_monedas;
 			
@@ -364,6 +359,19 @@ void batalla_s2(){
 			//Poner que has perdido monedas
 			system("pause");
 		}
+	}
+	//EL PROGRAMA MUESTRA LA HUIDA PERO NI LO TOMA EN CUENTA!!!
+	if(*huida==1){
+		*huida=0;
+		cout<<"\n";
+		cout<<" Huiste de la batarantalla..."<<endl;
+		cout<<"\n";
+		cout<<"TOAD CABEZÓN";
+		system("pause");
+		system("pause");
+
+		cout<<"TOAD PELON";
+		system("pause");
 	}
 }
 //ENFRENTAMIENTO EN EL SECTOR 2
@@ -404,7 +412,8 @@ void batallas_s2(int num_batalla,int color,int& vida_jugador,int& dinero,int& su
 		//Vida jugador total (vida() )
 	vida_total_jugador=&dir_vida_total_jugador;
 	*vida_total_jugador=*p_vida_jugador;
-	
+	//Huida jugador
+	huida=&dir_huida;
 	//Vida enemigo
 	p_vida_enemigo=&p_dir_vida_enemigo;
 		//Vida enemigo total (vida() )
@@ -436,7 +445,8 @@ void batallas_s2(int num_batalla,int color,int& vida_jugador,int& dinero,int& su
 		default: cout<<"Fuera de rango"; break;
 	}
 	batalla_s2();
-	
+	cout<<"DEBERIA SALIR ESTO";
+	system("pause");
 	//Pasando valores finales al paso por parametros
 	dinero=*p_dinero;
 	suexp=*p_exp;

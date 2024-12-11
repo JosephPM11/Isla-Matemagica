@@ -21,6 +21,26 @@ void setColor(int textColor) {
     SetConsoleTextAttribute(hConsole, BACKGROUND_CYAN | textColor);
 }
 
+//CASILLA NIVEL
+void asciiCasillaNivel(int x,int y,int nivel){
+    gotoxy(x,y);
+    cout << "    ____   " << endl;
+    gotoxy(x,y+1);
+    cout << "   /    \\  " << endl;
+    gotoxy(x,y+2);
+    if(nivel<10){
+        cout << "  |  0"<<nivel<<"  | " << endl;
+    }
+    else{
+        if(nivel>=10){
+            cout << "  |  "<<nivel<<"  | " << endl;
+        }
+    }
+    gotoxy(x,y+3);
+    cout << "   \\____/ " << endl;
+}
+//CASILLA NIVEL
+
 //Titulo principal
 void texto_titulo(){
     cout << "\t\t\t\t\t     ______            __           \n";

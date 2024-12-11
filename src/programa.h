@@ -15,6 +15,8 @@
 using namespace std;
 char usuario[20]; char contrasenha[20];
 
+//Nivel Actual
+int *nivelActual,dir_nivelActual=1;
 //Color
 int *color,dir_color=1;
 //Avatar
@@ -73,17 +75,8 @@ void fillConsoleBackground(int backgroundColor) {
     SetConsoleCursorPosition(hConsole, homeCoords);
 }
 
-void s1_opc_1();
-void s1_opc_2();
-void s1_opc_3();
-void s1_opc_4();
-void s1_opc_5();
-
-void s2_opc_1();
-void s2_opc_2();
-void s2_opc_3();
-void s2_opc_4();
-void s2_opc_5();
+void s1();
+void s2();
 
 void modo_campana();
 void modo_campana_opc_1();
@@ -135,7 +128,7 @@ void modo_campana_opc_1(){
 		case 48: menu();break; //Volver al menu
 		case 77: modo_campana_opc_2();break; //Flecha derecha
 		case 75: modo_campana_opc_5();break; //Flecha izquierda
-		case 13: s1_opc_1();break; //Enter
+		case 13: *nivelActual=1; s1();break; //Enter
 		default:modo_campana_opc_1();break;
 	}
 }
@@ -179,7 +172,7 @@ void modo_campana_opc_2(){
 		case 48: menu();break; //Volver al menu
 		case 77: modo_campana_opc_3();break; //Flecha derecha
 		case 75: modo_campana_opc_1();break; //Flecha izquierda
-		case 13: s2_opc_1();break; //Enter
+		case 13: *nivelActual=1;s2();break; //Enter
 		default:modo_campana_opc_2(); break;
 	}
 }
@@ -334,57 +327,38 @@ void modo_campana_opc_5(){
 	}
 }
 
-//S1 opc 1
-void s1_opc_1(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_sect1_campana();
-	setColor(FOREGROUND_BLUE);
-	cout<<"\n\n       o Nivel 1"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout<<"     o Nivel 2"<<endl;
-	cout<<"     o Nivel 3"<<endl;
-	cout<<"     o Nivel 4"<<endl;
-	cout<<"     o Nivel 5: Boss Battle"<<endl;
-	//Volver a la seleccion de sectores (Presiona 0)
-	gotoxy(72, 1);
-    cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
-	//Se utilizan 2 getch() cuando se quiere usar flechas para evitar el valor basura (224)
-	//Forma de detectar una tecla normal y una flecha sin tener que pedir siempre otro valor (en que caso que no sea flecha)
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
+//Funcion Casilla Nivel
+void casillaNivel(int dato1,int dato2,int dato3){
+	if(*nivelActual==dato3){
+		setColor(FOREGROUND_BLUE);
+		asciiCasillaNivel(dato1,dato2,dato3);
 	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: modo_campana_opc_1(); //Volver a la pantalla anterior
-		case 72: s1_opc_5();break; //Flecha arriba
-		case 80: s1_opc_2();break; //Flecha abajo
-		case 13: 
-		batallas_s1(1,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s1_opc_1(); break;
+	else{
+		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);  
+		asciiCasillaNivel(dato1,dato2,dato3);
 	}
-	modo_campana();
 }
 
-//S1 opc 2
-void s1_opc_2(){
+//Funcion mapa casillas
+void mapa_casillas(int sector){
 	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_sect1_campana();
-	cout<<"\n\n     o Nivel 1"<<endl;
-	setColor(FOREGROUND_BLUE);
-	cout<<"       o Nivel 2"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout<<"     o Nivel 3"<<endl;
-	cout<<"     o Nivel 4"<<endl;
-	cout<<"     o Nivel 5: Boss Battle"<<endl;
-	
-	//Volver a la seleccion de sectores (Presiona 0)
+	casillaNivel(5,12,1);
+	casillaNivel(11,16,2);
+	casillaNivel(18,12,3);
+	casillaNivel(24,16,4);
+	casillaNivel(30,20,5);
+	casillaNivel(37,16,6);
+	casillaNivel(43,12,7);
+	casillaNivel(51,9,8);
+	casillaNivel(57,13,9);
+	casillaNivel(64,17,10);
+	casillaNivel(70,13,11);
+	casillaNivel(76,17,12);
+	casillaNivel(86,17,13);
+	casillaNivel(94,14,14);
+	casillaNivel(104,14,15);
+
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);  
 	gotoxy(72, 1);
     cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
 	tecla= getch();
@@ -393,281 +367,101 @@ void s1_opc_2(){
 	}
 	//Teclas posibles
 	switch (tecla){
-		case 48: modo_campana_opc_1(); //Volver a la pantalla anterior
-		case 72: s1_opc_1();break; //Flecha arriba
-		case 80: s1_opc_3();break; //Flecha abajo
-		case 13: 
-		batallas_s1(2,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s1_opc_2(); break;
+		case 48:  //Volver a la pantalla anterior
+			switch(sector){
+				case 1: modo_campana_opc_1();break;
+				case 2: modo_campana_opc_2();break;
+				/*case 3: s3();break;
+				case 4: s4();break;
+				case 5: s5();break;*/
+				default: mapa_casillas(sector);break;
+			}
+		case 77:  //Flecha derecha
+		if(*nivelActual==15){ //Para pasar del último nivel al primero
+			*nivelActual=1;
+			switch(sector){
+				case 1: s1();break;
+				case 2: s2();break;
+				/*case 3: s3();break;
+				case 4: s4();break;
+				case 5: s5();break;*/
+				default: mapa_casillas(sector);break;
+			}
+		}
+		else{
+			*nivelActual+=1;
+			switch(sector){
+				case 1: s1();break;
+				case 2: s2();break;
+				/*case 3: s3();break;
+				case 4: s4();break;
+				case 5: s5();break;*/
+				default: mapa_casillas(sector);break;
+			}
+		}
+		case 75:  //Flecha izquierda
+		if(*nivelActual==1){ //Para pasar del primer nivel al último
+			*nivelActual=15;
+			switch(sector){
+				case 1: s1();break;
+				case 2: s2();break;
+				/*case 3: s3();break;
+				case 4: s4();break;
+				case 5: s5();break;*/
+				default: mapa_casillas(sector);break;
+			}
+		}
+		else{
+			*nivelActual-=1;
+			switch(sector){
+				case 1: s1();break;
+				case 2: s2();break;
+				/*case 3: s3();break;
+				case 4: s4();break;
+				case 5: s5();break;*/
+				default: mapa_casillas(sector);break;
+			}
+		}
+		case 13: //Enter
+			switch(sector){
+				case 1: batallas_s1(*nivelActual,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac);s1();break;
+				case 2: batallas_s2(*nivelActual,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac);
+				cout<<"PELOTASSSSSSS";
+				system("pause");
+				s2();break;
+				/*case 3: s3();break;
+				case 4: s4();break;
+				case 5: s5();break;*/
+				default: mapa_casillas(sector);break;
+			}
+		default:
+			switch(sector){
+				case 1: s1();break;
+				case 2: s2();break;
+				/*case 3: s3();break;
+				case 4: s4();break;
+				case 5: s5();break;*/
+				default: mapa_casillas(sector);break;
+			}
 	}
-	modo_campana();
 }
 
-//S1 opc 3
-void s1_opc_3(){
-	int tecla;
+//S1
+void s1(){
 	system("CLS");
 	fillConsoleBackground(BACKGROUND_CYAN);
 	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	titulo_sect1_campana();
-	cout<<"\n\n     o Nivel 1"<<endl;
-	cout<<"     o Nivel 2"<<endl;
-	setColor(FOREGROUND_BLUE);
-	cout<<"       o Nivel 3"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout<<"     o Nivel 4"<<endl;
-	cout<<"     o Nivel 5: Boss Battle"<<endl;
-	//Volver a la seleccion de sectores (Presiona 0)
-	gotoxy(72, 1);
-    cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: modo_campana_opc_1(); //Volver a la pantalla anterior
-		case 72: s1_opc_2();break; //Flecha arriba
-		case 80: s1_opc_4();break; //Flecha abajo
-		case 13: 
-		batallas_s1(3,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s1_opc_3(); break;
-	}
-	modo_campana();
+	mapa_casillas(1);
 }
-
-//S1 opc 4
-void s1_opc_4(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_sect1_campana();
-	cout<<"\n\n     o Nivel 1"<<endl;
-	cout<<"     o Nivel 2"<<endl;
-	cout<<"     o Nivel 3"<<endl;
-	setColor(FOREGROUND_BLUE);
-	cout<<"       o Nivel 4"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout<<"     o Nivel 5: Boss Battle"<<endl;
-	//Volver a la seleccion de sectores (Presiona 0)
-	gotoxy(72, 1);
-    cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: modo_campana_opc_1(); //Volver a la pantalla anterior
-		case 72: s1_opc_3();break; //Flecha arriba
-		case 80: s1_opc_5();break; //Flecha abajo
-		case 13: 
-		batallas_s1(4,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s1_opc_4(); break;
-	}
-	modo_campana();
-}
-
-//S1 opc 5
-void s1_opc_5(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_sect1_campana();
-	cout<<"\n\n     o Nivel 1"<<endl;
-	cout<<"     o Nivel 2"<<endl;
-	cout<<"     o Nivel 3"<<endl;
-	cout<<"     o Nivel 4"<<endl;
-	setColor(FOREGROUND_BLUE);
-	cout<<"       o Nivel 5: Boss Battle"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	//Volver a la seleccion de sectores (Presiona 0)
-	gotoxy(72, 1);
-    cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: modo_campana_opc_1(); //Volver a la pantalla anterior
-		case 72: s1_opc_4();break; //Flecha arriba
-		case 80: s1_opc_1();break; //Flecha abajo
-		case 13: 
-		batallas_s1(5,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s1_opc_5(); break;
-	}
-	modo_campana();
-}
-
 
 //S2 opc 1
-void s2_opc_1(){
-	int tecla;
+void s2(){
 	system("CLS");
 	fillConsoleBackground(BACKGROUND_CYAN);
 	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	titulo_sect2_campana();
-	setColor(FOREGROUND_BLUE);
-	cout<<"\n\n       o Nivel 1"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout<<"     o Nivel 2"<<endl;
-	cout<<"     o Nivel 3"<<endl;
-	cout<<"     o Nivel 4"<<endl;
-	cout<<"     o Nivel 5: Boss Battle"<<endl;
-	//Volver al menu (Presiona 0)
-	gotoxy(72, 1);
-    cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
-	//Se utilizan 2 getch() cuando se quiere usar flechas para evitar el valor basura (224)
-	//Forma de detectar una tecla normal y una flecha sin tener que pedir siempre otro valor (en que caso que no sea flecha)
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: modo_campana_opc_1(); //Volver a la pantalla anterior
-		case 72: s2_opc_5();break; //Flecha arriba
-		case 80: s2_opc_2();break; //Flecha abajo
-		case 13: 
-		batallas_s2(1,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s2_opc_1(); break;
-	}
-	modo_campana();
-}
-
-//S2 opc 2
-void s2_opc_2(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_sect2_campana();
-	cout<<"\n\n     o Nivel 1"<<endl;
-	setColor(FOREGROUND_BLUE);
-	cout<<"       o Nivel 2"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout<<"     o Nivel 3"<<endl;
-	cout<<"     o Nivel 4"<<endl;
-	cout<<"     o Nivel 5: Boss Battle"<<endl;
-	//Volver a la seleccion de sectores (Presiona 0)
-	gotoxy(72, 1);
-    cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu(); //Volver a la pantalla anterior
-		case 72: s2_opc_1();break; //Flecha arriba
-		case 80: s2_opc_3();break; //Flecha abajo
-		case 13: 
-		batallas_s2(2,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s2_opc_2(); break;
-	}
-	modo_campana();
-}
-
-//S2 opc 3
-void s2_opc_3(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_sect2_campana();
-	cout<<"\n\n     o Nivel 1"<<endl;
-	cout<<"     o Nivel 2"<<endl;
-	setColor(FOREGROUND_BLUE);
-	cout<<"       o Nivel 3"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout<<"     o Nivel 4"<<endl;
-	cout<<"     o Nivel 5: Boss Battle"<<endl;
-	//Volver a la seleccion de sectores (Presiona 0)
-	gotoxy(72, 1);
-    cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu(); //Volver a la pantalla anterior
-		case 72: s2_opc_2();break; //Flecha arriba
-		case 80: s2_opc_4();break; //Flecha abajo
-		case 13: 
-		batallas_s2(3,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s2_opc_3(); break;
-	}
-	modo_campana();
-}
-
-//S2 opc 4
-void s2_opc_4(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_sect2_campana();
-	cout<<"\n\n     o Nivel 1"<<endl;
-	cout<<"     o Nivel 2"<<endl;
-	cout<<"     o Nivel 3"<<endl;
-	setColor(FOREGROUND_BLUE);
-	cout<<"       o Nivel 4"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout<<"     o Nivel 5: Boss Battle"<<endl;
-	//Volver a la seleccion de sectores (Presiona 0)
-	gotoxy(72, 1);
-    cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu(); //Volver a la pantalla anterior
-		case 72: s2_opc_3();break; //Flecha arriba
-		case 80: s2_opc_5();break; //Flecha abajo
-		case 13: 
-		batallas_s2(4,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s2_opc_4(); break;
-	}
-	modo_campana();
-}
-
-//S1 opc 5
-void s2_opc_5(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_sect2_campana();
-	cout<<"\n\n     o Nivel 1"<<endl;
-	cout<<"     o Nivel 2"<<endl;
-	cout<<"     o Nivel 3"<<endl;
-	cout<<"     o Nivel 4"<<endl;
-	setColor(FOREGROUND_BLUE);
-	cout<<"       o Nivel 5: Boss Battle"<<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	//Volver a la seleccion de sectores (Presiona 0)
-	gotoxy(72, 1);
-    cout<< "Volver a la seleccion de sectores (Presiona 0)" << endl;
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu(); //Volver a la pantalla anterior
-		case 72: s2_opc_4();break; //Flecha arriba
-		case 80: s2_opc_1();break; //Flecha abajo
-		case 13: 
-		batallas_s2(5,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac); break; //Enter
-		default: s2_opc_5(); break;
-	}
-	modo_campana();
+	mapa_casillas(2);
 }
 
 void rangos(){
@@ -1673,6 +1467,8 @@ void crear_perfil() {
 
 void carga_variables() {
 	system("title Isla Matemagica");
+	//Nivel Actual
+	nivelActual=&dir_nivelActual;
 	//Color
 	color=&dir_color;
 	//Avatar

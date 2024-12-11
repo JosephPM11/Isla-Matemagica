@@ -8,6 +8,7 @@
 #include <windows.h>
 
 #include "ascii.h"
+#include "sector2.h"
 using namespace std;
 char respuesta_c[10];
 
@@ -36,6 +37,8 @@ int *p_cant_ataq_crit,p_dir_cant_ataq_crit=2;
 int *p_vida_jugador,p_dir_vida_jugador=0;
 		//Vida jugador total (vida() )
 int *vida_total_jugador,dir_vida_total_jugador=0;
+//Huida jugador
+int *huida,dir_huida=0;
 //Vida enemigo
 int *p_vida_enemigo,p_dir_vida_enemigo=0;
 		//Vida enemigo total (vida() )
@@ -571,11 +574,7 @@ void menu_jugador(int sector){
 					system("pause");
 				}
 				else{
-					cout<<"\n";
-					cout<<"Huiste de la batalla..."<<endl;
-					cout<<"\n";
-					system("pause");
-					modo_campana_opc_1();
+					*huida=1;
 				}
 			}
 			if(sector==2){
@@ -653,7 +652,7 @@ void batalla_s1(){
 	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	*p_cant_ataq_crit=2;
 	int turno=0;
-	while((*p_vida_enemigo>0)&&(*p_vida_jugador>0)){
+	while((*p_vida_enemigo>0)&&(*p_vida_jugador>0)&&(*huida==0)){
 		system("CLS");
 		
 		enemigo_s1();
@@ -722,6 +721,13 @@ void batalla_s1(){
 			system("pause");
 		}
 	}
+	if(*huida==1){
+		*huida=0;
+		cout<<"\n";
+		cout<<" Huiste de la batalla..."<<endl;
+		cout<<"\n";
+		system("pause");
+	}
 }
 //ENFRENTAMIENTO EN EL SECTOR 1
 
@@ -761,7 +767,8 @@ void batallas_s1(int num_batalla,int color,int& vida_jugador,int& dinero,int& su
 		//Vida jugador total (vida() )
 	vida_total_jugador=&dir_vida_total_jugador;
 	*vida_total_jugador=*p_vida_jugador;
-	
+	//Huida jugador
+	huida=&dir_huida;
 	//Vida enemigo
 	p_vida_enemigo=&p_dir_vida_enemigo;
 		//Vida enemigo total (vida() )
