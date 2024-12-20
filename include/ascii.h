@@ -42,7 +42,7 @@ void asciiCasillaNivel(int x,int y,int nivel){
 //CASILLA NIVEL
 
 //Titulo principal
-void texto_titulo(){
+void tituloPrincipal(){
     cout << "\t\t\t\t\t     ______            __           \n";
     cout << "\t\t\t\t\t    /      |          /  |          \n";
     cout << "\t\t\t\t\t    $$$$$$/   _______ $$ |  ______  \n";
@@ -67,6 +67,94 @@ void texto_titulo(){
 }
 
 //ASCII MODO CAMPAÑA
+void token(int sector, int x, int y){
+    switch(sector){
+        case 1:
+            gotoxy(x, y);
+            cout << "________"<<endl;
+            gotoxy(x-1, y+1);
+            cout << "/        \\"<<endl;
+            gotoxy(x-2, y+2);
+            cout << "/    ---   \\"<<endl;
+            gotoxy(x-3, y+3);
+            cout << "/      |     \\"<<endl;
+            gotoxy(x-3, y+4);
+            cout << "\\     ---    /"<<endl;
+            gotoxy(x-2, y+5);
+            cout << "\\          /"<<endl;
+            gotoxy(x-1, y+6);
+            cout << "\\________/"<<endl;
+            break;
+        case 2:
+            gotoxy(x, y);
+            cout << "________"<<endl;
+            gotoxy(x-1, y+1);
+            cout << "/        \\"<<endl;
+            gotoxy(x-2, y+2);
+            cout << "/   ----   \\"<<endl;
+            gotoxy(x-3, y+3);
+            cout << "/     ||     \\"<<endl;
+            gotoxy(x-3, y+4);
+            cout << "\\    ----    /"<<endl;
+            gotoxy(x-2, y+5);
+            cout << "\\          /"<<endl;
+            gotoxy(x-1, y+6);
+            cout << "\\________/"<<endl;
+            break;
+        case 3:
+            gotoxy(x, y);
+            cout << "________"<<endl;
+            gotoxy(x-1, y+1);
+            cout << "/        \\"<<endl;
+            gotoxy(x-2, y+2);
+            cout << "/   -----  \\"<<endl;
+            gotoxy(x-3, y+3);
+            cout << "/     |||    \\"<<endl;
+            gotoxy(x-3, y+4);
+            cout << "\\    -----   /"<<endl;
+            gotoxy(x-2, y+5);
+            cout << "\\          /"<<endl;
+            gotoxy(x-1, y+6);
+            cout << "\\________/"<<endl;
+            break;
+        case 4:
+            gotoxy(x, y);
+            cout << "________"<<endl;
+            gotoxy(x-1, y+1);
+            cout << "/        \\"<<endl;
+            gotoxy(x-2, y+2);
+            cout << "/  ------  \\"<<endl;
+            gotoxy(x-3, y+3);
+            cout << "/    ||||    \\"<<endl;
+            gotoxy(x-3, y+4);
+            cout << "\\   ------   /"<<endl;
+            gotoxy(x-2, y+5);
+            cout << "\\          /"<<endl;
+            gotoxy(x-1, y+6);
+            cout << "\\________/"<<endl;
+            break;
+        case 5:
+            gotoxy(x, y);
+            cout << "________"<<endl;
+            gotoxy(x-1, y+1);
+            cout << "/        \\"<<endl;
+            gotoxy(x-2, y+2);
+            cout << "/          \\"<<endl;
+            gotoxy(x-3, y+3);
+            cout << "/    \\   /   \\"<<endl;
+            gotoxy(x-3, y+4);
+            cout << "\\     \\_/    /"<<endl;
+            gotoxy(x-2, y+5);
+            cout << "\\          /"<<endl;
+            gotoxy(x-1, y+6);
+            cout << "\\________/"<<endl;
+            break;
+        default:token(sector,x,y);
+    }
+}
+
+
+/*
 void token_s1(int x, int y){
     gotoxy(x, y);
     cout << "________"<<endl;
@@ -151,6 +239,7 @@ void token_s5(int x, int y){
     gotoxy(x-1, y+6);
     cout << "\\________/"<<endl;
 }
+*/
 
 void titulo_sect_modo_campana(){
 	gotoxy(72, 21);
@@ -261,6 +350,19 @@ void titulo_avatares_tienda(){
 //ASCII TIENDA
 
 //ASCII ITEMS
+void ascii_poci_suma(int x,int y);
+void ascii_poli_poder(int x,int y);
+void ascii_escu_frac(int x,int y);
+
+void items(int num, int x,int y){
+    switch(num){
+        case 1: ascii_poci_suma(x,y);break;
+        case 2: ascii_poli_poder(x,y);break;
+        case 3: ascii_escu_frac(x,y);break;
+        default: items(num,x,y);break;
+    }
+}
+
 void ascii_poci_suma(int x,int y){
     gotoxy(x, y);
 	cout << "_____" << endl;
@@ -313,7 +415,20 @@ void ascii_escu_frac(int x,int y){
 //ASCII ITEMS
 
 // ASCII AVATARES
-void avatar0(int x,int y){
+void ascii_avatar1(int x,int y);
+void ascii_avatar2(int x,int y);
+void ascii_avatar3(int x,int y);
+
+void asciiAvatares(int num, int x,int y){
+    switch(num){
+        case 1: ascii_avatar1(x,y);break;
+        case 2: ascii_avatar2(x,y);break;
+        case 3: ascii_avatar3(x,y);break;
+        default: asciiAvatares(num,x,y);break;
+    }
+}
+
+void ascii_avatar0(int x,int y){
     gotoxy(x,y);
     cout << "(o.o)" << endl;
     gotoxy(x,y+1);
@@ -324,7 +439,7 @@ void avatar0(int x,int y){
     cout << " | | " << endl;
 }
 
-void avatar1(int x,int y){
+void ascii_avatar1(int x,int y){
     gotoxy(x,y);
     cout << "(B.B)" << endl;
     gotoxy(x,y+1);
@@ -335,7 +450,7 @@ void avatar1(int x,int y){
     cout << " | | " << endl;
 }
 
-void avatar2(int x,int y){
+void ascii_avatar2(int x,int y){
     gotoxy(x,y);
     cout << "(V.V)" << endl;
     gotoxy(x,y+1);
@@ -346,7 +461,7 @@ void avatar2(int x,int y){
     cout << " | | " << endl;
 }
 
-void avatar3(int x,int y){
+void ascii_avatar3(int x,int y){
     gotoxy(x,y);
     cout << "(UwU)" << endl;
     gotoxy(x,y+1);

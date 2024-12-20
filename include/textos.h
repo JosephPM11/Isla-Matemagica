@@ -91,7 +91,25 @@ void descripcion_s5(){
 //TEXTO SECTORES MODO CAMPAÑA
 
 //TEXTO ITEMS
+extern int precioPociSuma;
+extern int precioPoliPoder;
+extern int precioEscuFrac;
+
+void descripcion_poci_suma();
+void descripcion_poli_poder();
+void descripcion_escu_frac();
+
+void descripcion_items(int num){
+    switch(num){
+        case 1: descripcion_poci_suma();break;
+        case 2: descripcion_poli_poder();break;
+        case 3: descripcion_escu_frac();break;
+        default: descripcion_items(num);break;
+    }
+}
+
 void descripcion_poci_suma(){
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	gotoxy(5, 20);
 	cout<<"Pocion de Sumas (20 MONEDAS)"<<endl;
 	gotoxy(5, 22);
@@ -113,6 +131,7 @@ void descripcion_poci_suma(){
 }
 
 void descripcion_poli_poder(){
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	gotoxy(5, 20);
 	cout<<"Poliedro de Poder (40 MONEDAS)"<<endl;
 	gotoxy(5, 22);
@@ -134,6 +153,7 @@ void descripcion_poli_poder(){
 }
 
 void descripcion_escu_frac(){
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	gotoxy(5, 20);
 	cout<<"Escudo Fractal (30 MONEDAS)"<<endl;
     gotoxy(5, 22);
@@ -156,9 +176,30 @@ void descripcion_escu_frac(){
 //TEXTO ITEMS
 
 //TEXTO AVATARES
+extern int precioAvatar1;
+extern int precioAvatar2;
+extern int precioAvatar3;
+
+void descripcion_avatar1();
+void descripcion_avatar2();
+void descripcion_avatar3();
+void atributos_avatar1(int x, int y);
+void atributos_avatar2(int x, int y);
+void atributos_avatar3(int x, int y);
+
+void descripcion_avatares(int num){
+    switch(num){
+        case 1: descripcion_avatar1();atributos_avatar1(5,27);break;
+        case 2: descripcion_avatar2();atributos_avatar2(5,27);break;
+        case 3: descripcion_avatar3();atributos_avatar3(5,27);break;
+        default: descripcion_items(num);break;
+    }
+}
+
 void descripcion_avatar1(){
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	gotoxy(5, 20);
-	cout<<"Geometra (1000 MONEDAS)"<<endl;
+	cout<<"Geometra ("<<precioAvatar1<<" MONEDAS)"<<endl;
 	gotoxy(5, 22);
 	cout<<"Tu destreza en combate basada en principios"<<endl;
 	gotoxy(5, 23);
@@ -169,9 +210,19 @@ void descripcion_avatar1(){
 	cout<<"reduce debido a tu enfoque en la fuerza bruta."<<endl;
 }
 
+void atributos_avatar1(int x, int y){
+	//Color rosado
+	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x,y);
+	cout<<"+1 Poliedro de Poder (c/batalla)   +3 vida"<<endl;
+	gotoxy(x,y+1);
+	cout<<"+5 ataque                          -2 pt habilidad"<<endl;
+}
+
 void descripcion_avatar2(){
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	gotoxy(5, 20);
-	cout<<"Numeromante (1000 MONEDAS)"<<endl;
+	cout<<"Numeromante ("<<precioAvatar2<<" MONEDAS)"<<endl;
 	gotoxy(5, 22);
 	cout<<"Tu conexion con la magia curativa aumenta"<<endl;
 	gotoxy(5, 23);
@@ -182,9 +233,19 @@ void descripcion_avatar2(){
 	cout<<"debido a tu enfoque en la proteccion."<<endl;
 }
 
+void atributos_avatar2(int x, int y){
+	//Color rosado
+	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x,y);
+	cout<<"+1 Pocion de Salud (c/batalla)     +10 vida"<<endl;
+	gotoxy(x,y+1);
+	cout<<"-3 ataque                          -1 pt habilidad"<<endl;
+}
+
 void descripcion_avatar3(){
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	gotoxy(5, 20);
-	cout<<"Teoremagista (1000 MONEDAS)"<<endl;
+	cout<<"Teoremagista ("<<precioAvatar3<<" MONEDAS)"<<endl;
 	gotoxy(5, 22);
 	cout<<"Tu dominio de los teoremas magicos incrementa"<<endl;
 	gotoxy(5, 23);
@@ -193,6 +254,15 @@ void descripcion_avatar3(){
 	cout<<"fuerza fisica se ven reducidas debido a"<<endl;
 	gotoxy(5, 25);
 	cout<<"la dedicacion a tus estudios."<<endl;
+}
+
+void atributos_avatar3(int x, int y){
+	//Color rosado
+	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	gotoxy(x,y);
+	cout<<"+1 Escudo Fractal (c/batalla)      -5 vida"<<endl;
+	gotoxy(x,y+1);
+	cout<<"-1 ataque                          +2 pt habilidad"<<endl;
 }
 //TEXTO AVATARES
 

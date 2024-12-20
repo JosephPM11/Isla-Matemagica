@@ -15,8 +15,14 @@
 using namespace std;
 char usuario[20]; char contrasenha[20];
 
+//Opción menu Actual
+int *opcMenuActual,dir_opcMenuActual=1;
+//Sector Actual
+int *sectorActual,dir_sectorActual=1;
 //Nivel Actual
 int *nivelActual,dir_nivelActual=1;
+//Objeto tienda seleccionado Actual
+int *objTiendaActual,dir_objTiendaActual=1;
 //Color
 int *color,dir_color=1;
 //Avatar
@@ -52,8 +58,6 @@ int *vida_enemigo1_s1,dir_vida_enemigo1_s1=10;
 //Color de fondo y texto
 const int BACKGROUND_CYAN = BACKGROUND_BLUE | BACKGROUND_GREEN;
 
-void menu();
-
 // Función para fondo (Para evitar error de que no se coloree todo)
 void fillConsoleBackground(int backgroundColor) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -75,49 +79,52 @@ void fillConsoleBackground(int backgroundColor) {
     SetConsoleCursorPosition(hConsole, homeCoords);
 }
 
+void menu();
 void s1();
 void s2();
-
 void modo_campana();
-void modo_campana_opc_1();
-void modo_campana_opc_2();
-void modo_campana_opc_3();
-void modo_campana_opc_4();
-void modo_campana_opc_5();
+void menu_sectores();
 
 void modo_campana(){
-	modo_campana_opc_1();
-}
-
-//Modo Campana opc 1
-void modo_campana_opc_1(){
-	int tecla;
 	system("CLS");
 	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);                                     
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);                             
 	ascii_modo_campana();
 	mesa_tienda();
 	titulo_sect_modo_campana();
-	
-	setColor(FOREGROUND_BLUE);
-	//Sector 1
-	token_s1(15,9);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
-	descripcion_s1(); //Descripción
-	
-	//Sector 2
-	token_s2(35,10);
-	//Sector 3
-	token_s3(55,10);
-    //Sector 4
-	token_s4(75,10);
-    //Sector 5
-	token_s5(95,10);
-
 	//Volver al menu (Presiona 0)
 	gotoxy(91, 1);
     cout<< "Volver al menu (Presiona 0)" << endl;
+	switch(*sectorActual){
+		case 1: descripcion_s1();break;
+		case 2: descripcion_s2();break;
+		case 3: descripcion_s3();break;
+		case 4: descripcion_s4();break;
+		case 5: descripcion_s5();break;
+		default: modo_campana();break;
+	}
+	menu_sectores();
+}
+
+void tokenSector(int sector,int x,int y){
+	if(*sectorActual==sector){
+		setColor(FOREGROUND_BLUE);
+		token(sector,x,y-1);
+	}
+	else{
+		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);  
+		token(sector,x,y);
+	}
+}
+
+void menu_sectores(){
+	int tecla;
+	tokenSector(1,15,10);
+	tokenSector(2,35,10);
+	tokenSector(3,55,10);
+	tokenSector(4,75,10);
+	tokenSector(5,95,10);
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);  
 
 	tecla= getch();
 	if(tecla==224){
@@ -126,208 +133,37 @@ void modo_campana_opc_1(){
 	//Teclas posibles
 	switch (tecla){
 		case 48: menu();break; //Volver al menu
-		case 77: modo_campana_opc_2();break; //Flecha derecha
-		case 75: modo_campana_opc_5();break; //Flecha izquierda
-		case 13: *nivelActual=1; s1();break; //Enter
-		default:modo_campana_opc_1();break;
+		case 77:  //Flecha derecha
+		if(*sectorActual==5){ //Para pasar del último token al primero
+			*sectorActual=1;
+			modo_campana();
+		}
+		else{
+			*sectorActual+=1;
+			modo_campana();
+		}
+		case 75:  //Flecha izquierda
+		if(*sectorActual==1){ //Para pasar del primer token al último
+			*sectorActual=5;
+			modo_campana();
+		}
+		else{
+			*sectorActual-=1;
+			modo_campana();
+		}
+		case 13: //Enter
+			switch(*sectorActual){
+				case 1: *sectorActual=1;*nivelActual=1;s1();break;
+				case 2: *sectorActual=1;*nivelActual=1;s2();break;
+				/*case 3: s3();break;
+				case 4: s4();break;
+				case 5: s5();break;*/
+				default: menu_sectores();break;
+			}
+		default: menu_sectores(); break;
 	}
 }
 
-//Modo Campana opc 2
-void modo_campana_opc_2(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);                                     
-	ascii_modo_campana();
-	mesa_tienda();
-	titulo_sect_modo_campana();
-	
-	//Sector 1
-	token_s1(15,10);
-	setColor(FOREGROUND_BLUE);
-	//Sector 2
-	token_s2(35,9);
-    setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
-	descripcion_s2(); //Descripción
-
-	//Sector 3
-	token_s3(55,10);
-    //Sector 4
-	token_s4(75,10);
-    //Sector 5
-	token_s5(95,10);
-    
-	//Volver al menu (Presiona 0)
-	gotoxy(91, 1);
-    cout<< "Volver al menu (Presiona 0)" << endl;
-
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: modo_campana_opc_3();break; //Flecha derecha
-		case 75: modo_campana_opc_1();break; //Flecha izquierda
-		case 13: *nivelActual=1;s2();break; //Enter
-		default:modo_campana_opc_2(); break;
-	}
-}
-
-//Modo Campana opc 3
-void modo_campana_opc_3(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);                                     
-	ascii_modo_campana();
-	mesa_tienda();
-	titulo_sect_modo_campana();
-	
-	//Sector 1
-	token_s1(15,10);
-	//Sector 2
-	token_s2(35,10);
-
-    setColor(FOREGROUND_BLUE);
-	//Sector 3
-	token_s3(55,9);
-    setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
-	descripcion_s3(); //Descripción
-
-    //Sector 4
-	token_s4(75,10);
-    //Sector 5
-	token_s5(95,10);
-    
-	//Volver al menu (Presiona 0)
-	gotoxy(91, 1);
-    cout<< "Volver al menu (Presiona 0)" << endl;
-
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: modo_campana_opc_4();break; //Flecha derecha
-		case 75: modo_campana_opc_2();break; //Flecha izquierda
-		case 13: 
-		gotoxy(5, 28);
-		cout<<"Completa el sector anterior para desbloquear";
-		getch();
-		modo_campana_opc_3();
-		break; //Enter
-		default: modo_campana_opc_3(); break;
-	}
-}
-
-//Modo Campana opc 4
-void modo_campana_opc_4(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);                                     
-	ascii_modo_campana();
-	mesa_tienda();
-	titulo_sect_modo_campana();
-	
-	//Sector 1
-	token_s1(15,10);
-	//Sector 2
-	token_s2(35,10);
-
-	//Sector 3
-	token_s3(55,10);
-    
-  	setColor(FOREGROUND_BLUE);
-    //Sector 4
-	token_s4(75,9);
-    setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
-	descripcion_s4(); //Descripción
-
-    //Sector 5
-	token_s5(95,10);
-    
-	//Volver al menu (Presiona 0)
-	gotoxy(91, 1);
-    cout<< "Volver al menu (Presiona 0)" << endl;
-
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: modo_campana_opc_5();break; //Flecha derecha
-		case 75: modo_campana_opc_3();break; //Flecha izquierda
-		case 13:
-		gotoxy(5, 28);
-		cout<<"Completa el sector anterior para desbloquear";
-		getch();
-		modo_campana_opc_4();
-		break; //Enter
-		default:modo_campana_opc_4(); break;
-	}
-}
-
-//Modo Campana opc 5
-void modo_campana_opc_5(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);                                     
-	ascii_modo_campana();
-	mesa_tienda();
-	titulo_sect_modo_campana();
-	
-	//Sector 1
-	token_s1(15,10);
-	//Sector 2
- 	token_s2(35,10);
-	//Sector 3
-	token_s3(55,10);
-   	//Sector 4
-	token_s4(75,10);
-    
-    setColor(FOREGROUND_BLUE);
-    //Sector 5
-	token_s5(95,9);
-    setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
-	descripcion_s5(); //Descripción
-
-	//Volver al menu (Presiona 0)
-	gotoxy(91, 1);
-    cout<< "Volver al menu (Presiona 0)" << endl;
-
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: modo_campana_opc_1();break; //Flecha derecha
-		case 75: modo_campana_opc_4();break; //Flecha izquierda
-		case 13:
-		gotoxy(5, 28);
-		cout<<"Completa el sector anterior para desbloquear";
-		getch();
-		modo_campana_opc_5();
-		break; //Enter
-		default: modo_campana_opc_5(); break;
-	}
-}
-
-//Funcion Casilla Nivel
 void casillaNivel(int dato1,int dato2,int dato3){
 	if(*nivelActual==dato3){
 		setColor(FOREGROUND_BLUE);
@@ -339,7 +175,6 @@ void casillaNivel(int dato1,int dato2,int dato3){
 	}
 }
 
-//Funcion mapa casillas
 void mapa_casillas(int sector){
 	int tecla;
 	casillaNivel(5,12,1);
@@ -369,11 +204,11 @@ void mapa_casillas(int sector){
 	switch (tecla){
 		case 48:  //Volver a la pantalla anterior
 			switch(sector){
-				case 1: modo_campana_opc_1();break;
-				case 2: modo_campana_opc_2();break;
-				/*case 3: s3();break;
-				case 4: s4();break;
-				case 5: s5();break;*/
+				case 1: *sectorActual=1;modo_campana();break;
+				case 2: *sectorActual=2;modo_campana();break;
+				/*case 3: *sectorActual=3;modo_campana();break;
+				case 4: *sectorActual=4;modo_campana();break;
+				case 5: *sectorActual=5;modo_campana();break;*/
 				default: mapa_casillas(sector);break;
 			}
 		case 77:  //Flecha derecha
@@ -455,7 +290,7 @@ void s1(){
 	mapa_casillas(1);
 }
 
-//S2 opc 1
+//S2
 void s2(){
 	system("CLS");
 	fillConsoleBackground(BACKGROUND_CYAN);
@@ -574,7 +409,7 @@ void cambio_avatar(){
 				cambio_avatar();
 			}
 			break;
-			default: cout<<"Fuera de rango";break;
+			default:cambio_avatar();break;
 		}
 }
 
@@ -598,11 +433,11 @@ void perfil(){
 		//cout<<"\t       Ataque: "<<*exp<<"/2000"<<endl;
 		
 		switch(*avatar){
-			case 0: avatar0(7,13);break;
-			case 1: avatar1(7,13);break;
-			case 2: avatar2(7,13);break;
-			case 3: avatar3(7,13);break;
-			default:cout<<"Fuera de rango";break;
+			case 0: ascii_avatar0(7,13);break;
+			case 1: ascii_avatar1(7,13);break;
+			case 2: ascii_avatar2(7,13);break;
+			case 3: ascii_avatar3(7,13);break;
+			default:perfil();break;
 		}
 
 		gotoxy(45, 8);
@@ -648,43 +483,51 @@ void perfil(){
 }
 
 void tienda();
+void avatares();
 
-void obj_tienda_opc_1();
-void obj_tienda_opc_2();
-void obj_tienda_opc_3();
+void menuItemsTienda();
+void menuAvataresTienda();
 
-void avatar_tienda_opc_1();
-void avatar_tienda_opc_2();
-void avatar_tienda_opc_3();
+//TIENDA: ITEMS
+int precioPociSuma = 20;
+int precioPoliPoder = 40;
+int precioEscuFrac = 30;
+
 void tienda(){
-	obj_tienda_opc_1();
-}
-
-//Obj Tienda opc 1
-void obj_tienda_opc_1(){
-	int tecla;
 	system("CLS");
 	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);                                       
 	titulo_tienda();
+	mesa_tienda();
+	titulo_items_tienda();
+	menuItemsTienda();
+}
+
+
+void itemsTienda(int num, int x, int y){
+	if(num==*objTiendaActual){
+		setColor(FOREGROUND_BLUE);
+		items(num,x,y-1);
+	}
+	else{
+		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		items(num,x,y);
+	}
+}
+
+void menuItemsTienda(){
+	int tecla;
+	itemsTienda(1,35,11);
+	itemsTienda(2,55,10);
+	itemsTienda(3,79,10);
+	descripcion_items(*objTiendaActual);
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	//Dinero
-	gotoxy(5, 7);
+	gotoxy(5,7);
 	if(*dinero==1){
 		cout<< "Dinero: "<<*dinero<<" moneda"<<endl;
 	} else{
 		cout<< "Dinero: "<<*dinero<<" monedas"<<endl;
 	}
-	
-	mesa_tienda();
-	titulo_items_tienda();
-	
-	setColor(FOREGROUND_BLUE);
-	ascii_poci_suma(35,10);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	descripcion_poci_suma();//Descripción
-
-	ascii_poli_poder(55,10);
-	ascii_escu_frac(79,10);
 	//Volver al menu (Presiona 0)
 	gotoxy(91, 1);
     cout<< "Volver al menu (Presiona 0)" << endl;
@@ -698,208 +541,144 @@ void obj_tienda_opc_1(){
 	}
 	//Teclas posibles
 	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: obj_tienda_opc_2();break; //Flecha derecha
-		case 75: obj_tienda_opc_3();break; //Flecha izquierda
-		case 13: 
-			if(*dinero>=20){
-				*dinero-=20;
-				*poci_suma+=1;
-				gotoxy(5, 27);
-				cout<<"-> !Has comprado una Pocion de Sumas!"<<endl;
-				gotoxy(8, 28);
-				cout<<"Se ha agregado a tu inventario"<<endl;
-				getch();
-				obj_tienda_opc_1();
+		case 48: *objTiendaActual=1;menu();break; //Volver al menu
+		case 77: //Flecha derecha
+			if(*objTiendaActual==3){
+				*objTiendaActual=1;
+				tienda();
 			}
 			else{
-				gotoxy(5, 27);
-				cout<<"-> No cuentas con el dinero suficiente"<<endl;
-				gotoxy(8, 28);
-				cout<<"para comprar este objeto :("<<endl;
-				cout<<"\n";
-				getch();
-				obj_tienda_opc_1();
+				*objTiendaActual+=1;
+				tienda();
 			}
-			break; //Enter
-		case 81:avatar_tienda_opc_1();break;//Tecla q //Avatares
-		case 113:avatar_tienda_opc_1();break;//Tecla Q //Avatares
-		default:obj_tienda_opc_1();break;
+			break;
+		case 75:  //Flecha izquierda
+			if(*objTiendaActual==1){
+				*objTiendaActual=3;
+				tienda();
+			}
+			else{
+				*objTiendaActual-=1;
+				tienda();
+			}
+			break;
+		case 13: //Enter
+			switch(*objTiendaActual){
+				case 1:
+					if(*dinero>=precioPociSuma){
+						*dinero-=precioPociSuma;
+						*poci_suma+=1;
+						gotoxy(5,27);
+						cout<<"-> !Has comprado una Pocion de Sumas!"<<endl;
+						gotoxy(8,28);
+						cout<<"Se ha agregado a tu inventario"<<endl;
+						getch();
+						tienda();
+					}
+					else{
+						gotoxy(5,27);
+						cout<<"-> No cuentas con el dinero suficiente"<<endl;
+						gotoxy(8,28);
+						cout<<"para comprar este objeto :("<<endl;
+						cout<<"\n";
+						getch();
+						tienda();
+					}
+					break;
+				case 2:
+					if(*dinero>=precioPoliPoder){
+						*dinero-=precioPoliPoder;
+						*poli_poder+=1;
+						gotoxy(5, 27);
+						cout<<"-> !Has comprado un Poliedro de Poder!"<<endl;
+						gotoxy(8, 28);
+						cout<<"Se ha agregado a tu inventario"<<endl;
+						getch();
+						tienda();
+					}
+					else{	
+						gotoxy(5, 27);
+						cout<<"-> No cuentas con el dinero suficiente"<<endl;
+						gotoxy(8, 28);
+						cout<<"para comprar este objeto :("<<endl;
+						cout<<"\n";
+						getch();
+						tienda();
+					}
+					break;
+				case 3:
+					if(*dinero>=precioEscuFrac){
+						*dinero-=precioEscuFrac;
+						*escu_frac+=1;
+						gotoxy(5, 27);
+						cout<<"-> !Has comprado un Escudo Fractal!"<<endl;
+						gotoxy(8, 28);
+						cout<<"Se ha agregado a tu inventario"<<endl;
+						getch();
+						tienda();
+					}
+					else{
+						gotoxy(5, 27);
+						cout<<"-> No cuentas con el dinero suficiente"<<endl;
+						gotoxy(8, 28);
+						cout<<"para comprar este objeto :("<<endl;
+						cout<<"\n";
+						getch();
+						tienda();
+					}
+					break;
+				default: tienda();break;
+			}
+			break;
+		case 81:*objTiendaActual=1;avatares();break;//Tecla q //Avatares
+		case 113:*objTiendaActual=1;avatares();break;//Tecla Q //Avatares
+		default:menuItemsTienda();break;
 	}
 }
 
-//Obj Tienda opc 2
-void obj_tienda_opc_2(){
-	int tecla;
+//TIENDA: AVATARES
+int precioAvatar1 = 500;
+int precioAvatar2 = 500;
+int precioAvatar3 = 500;
+
+void avatares(){
 	system("CLS");
 	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	titulo_tienda();
+	mesa_tienda();
+	titulo_avatares_tienda();
+	menuAvataresTienda();
+}
+
+void avataresTienda(int num, int x, int y){
+	if(num==*objTiendaActual){
+		setColor(FOREGROUND_BLUE);
+		asciiAvatares(num,x,y-1);
+	}
+	else{
+		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		asciiAvatares(num,x,y);
+	}
+}
+
+void menuAvataresTienda(){
+	int tecla;
+	avataresTienda(1,35,12);
+	avataresTienda(2,55,12);
+	avataresTienda(3,79,12);
+	descripcion_avatares(*objTiendaActual);
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	//Dinero
-	gotoxy(5, 7);
+	gotoxy(5,7);
 	if(*dinero==1){
 		cout<< "Dinero: "<<*dinero<<" moneda"<<endl;
 	} else{
 		cout<< "Dinero: "<<*dinero<<" monedas"<<endl;
 	}
-	
-	mesa_tienda();
-	titulo_items_tienda();
-	ascii_poci_suma(35,11);
-	setColor(FOREGROUND_BLUE);
-	ascii_poli_poder(55,9);
-    setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	descripcion_poli_poder();
-
-	ascii_escu_frac(79,10);
 	//Volver al menu (Presiona 0)
 	gotoxy(91, 1);
     cout<< "Volver al menu (Presiona 0)" << endl;
     //Ir a la seccion Avatares (Presiona q/Q)
-    gotoxy(97, 2);
-    cout<< "Avatares (Presiona Q)" << endl;
-
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: obj_tienda_opc_3();break; //Flecha derecha
-		case 75: obj_tienda_opc_1();break; //Flecha izquierda
-		case 13: 
-			if(*dinero>=40){
-				*dinero-=40;
-				*poli_poder+=1;
-				gotoxy(5, 27);
-				cout<<"-> !Has comprado un Poliedro de Poder!"<<endl;
-				gotoxy(8, 28);
-				cout<<"Se ha agregado a tu inventario"<<endl;
-				getch();
-				obj_tienda_opc_2();
-			}
-			else{	
-				gotoxy(5, 27);
-				cout<<"-> No cuentas con el dinero suficiente"<<endl;
-				gotoxy(8, 28);
-				cout<<"para comprar este objeto :("<<endl;
-				cout<<"\n";
-				getch();
-				obj_tienda_opc_2();
-			}
-			break; //Enter
-		case 81:avatar_tienda_opc_1();break;//Tecla q //Avatares
-		case 113:avatar_tienda_opc_1();break;//Tecla Q //Avatares
-		default:obj_tienda_opc_2(); break;
-	}
-}
-
-//Obj Tienda opc 3
-void obj_tienda_opc_3(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_tienda();
-	//Dinero
-	gotoxy(5, 7);
-	if(*dinero==1){
-		cout<< "Dinero: "<<*dinero<<" moneda"<<endl;
-	} else{
-		cout<< "Dinero: "<<*dinero<<" monedas"<<endl;
-	}
-	
-	mesa_tienda();
-	titulo_items_tienda();
-	ascii_poci_suma(35,11);
-	ascii_poli_poder(55,10);
-
-    setColor(FOREGROUND_BLUE);
-    //Escudo Fractal
-	ascii_escu_frac(79,9);
-    setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-    descripcion_escu_frac();
-	
-	//Volver al menu (Presiona 0)
-	gotoxy(91, 1);
-    cout<< "Volver al menu (Presiona 0)" << endl;
-    //Ir a la seccion Avatares (Presiona q/Q)
-    gotoxy(97, 2);
-    cout<< "Avatares (Presiona Q)" << endl;
-	
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: obj_tienda_opc_1();break; //Flecha derecha
-		case 75: obj_tienda_opc_2();break; //Flecha izquierda
-		case 13: 
-			if(*dinero>=30){
-				*dinero-=30;
-				*escu_frac+=1;
-				gotoxy(5, 27);
-				cout<<"-> !Has comprado un Escudo Fractal!"<<endl;
-				gotoxy(8, 28);
-				cout<<"Se ha agregado a tu inventario"<<endl;
-				getch();
-				obj_tienda_opc_3();
-			}
-			else{
-				gotoxy(5, 27);
-				cout<<"-> No cuentas con el dinero suficiente"<<endl;
-				gotoxy(8, 28);
-				cout<<"para comprar este objeto :("<<endl;
-				cout<<"\n";
-				getch();
-				obj_tienda_opc_3();
-			}
-			break; //Enter
-		case 81:avatar_tienda_opc_1();break;//Tecla q //Avatares
-		case 113:avatar_tienda_opc_1();break;//Tecla Q //Avatares
-		default: obj_tienda_opc_3(); break;
-	}
-}
-
-//Avatar Tienda opc 1
-void avatar_tienda_opc_1(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);                                       
-	titulo_tienda();
-	//Dinero
-	gotoxy(5, 7);
-	if(*dinero==1){
-		cout<< "Dinero: "<<*dinero<<" moneda"<<endl;
-	} else{
-		cout<< "Dinero: "<<*dinero<<" monedas"<<endl;
-	}
-	
-	mesa_tienda();
-	titulo_avatares_tienda();
-
-	setColor(FOREGROUND_BLUE);
-	avatar1(35,11);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	descripcion_avatar1();
-	//Color rosado
-	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	gotoxy(5, 27);
-	cout<<"+1 Poliedro de Poder (c/batalla)   +3 vida"<<endl;
-	gotoxy(5, 28);
-	cout<<"+5 ataque                          -2 pt habilidad"<<endl;
-	//Color blanco
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	avatar2(56,12);
-	avatar3(79,12);
-	//Volver al menu (Presiona 0)
-	gotoxy(91, 1);
-    cout<< "Volver al menu (Presiona 0)" << endl;
-    //Ir a la seccion Items (Presiona q/Q)
     gotoxy(100, 2);
     cout<< "Items (Presiona Q)" << endl;
 
@@ -909,185 +688,98 @@ void avatar_tienda_opc_1(){
 	}
 	//Teclas posibles
 	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: avatar_tienda_opc_2();break; //Flecha derecha
-		case 75: avatar_tienda_opc_3();break; //Flecha izquierda
-		case 13: 
-			if(*dinero>=1000){
-				*dinero-=1000;
-				*des_avatar1=1;
-				gotoxy(5, 27);
-				cout<<"-> !Has comprado el Avatar 1!"<<endl;
-				gotoxy(8, 28);
-				cout<<"Se ha agregado a tu inventario"<<endl;
-				getch();
-				avatar_tienda_opc_1();
+		case 48: *objTiendaActual=1;menu();break; //Volver al menu
+		case 77: //Flecha derecha
+			if(*objTiendaActual==3){
+				*objTiendaActual=1;
+				avatares();
 			}
 			else{
-				gotoxy(5, 27);
-				cout<<"-> No cuentas con el dinero suficiente"<<endl;
-				gotoxy(8, 28);
-				cout<<"para comprar este avatar :("<<endl;
-				cout<<"\n";
-				getch();
-				avatar_tienda_opc_1();
+				*objTiendaActual+=1;
+				avatares();
 			}
-			break; //Enter
-		case 81:obj_tienda_opc_1();break;//Tecla q //Items
-		case 113:obj_tienda_opc_1();break;//Tecla Q //Items
-		default:avatar_tienda_opc_1();break;
-	}
-}
-
-//Avatar Tienda opc 2
-void avatar_tienda_opc_2(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_tienda();
-	//Dinero
-	gotoxy(5, 7);
-	if(*dinero==1){
-		cout<< "Dinero: "<<*dinero<<" moneda"<<endl;
-	} else{
-		cout<< "Dinero: "<<*dinero<<" monedas"<<endl;
-	}
-	mesa_tienda();
-	titulo_avatares_tienda();
-
-	avatar1(35,12);
-	setColor(FOREGROUND_BLUE);
-	avatar2(56,11);
-    setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	descripcion_avatar2();
-	//Color rosado
-	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	gotoxy(5, 27);
-	cout<<"+1 Pocion de Salud (c/batalla)     +10 vida"<<endl;
-	gotoxy(5, 28);
-	cout<<"-3 ataque                          -1 pt habilidad"<<endl;
-	//Color blanco
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
-	avatar3(79,12);
-	//Volver al menu (Presiona 0)
-	gotoxy(91, 1);
-    cout<< "Volver al menu (Presiona 0)" << endl;
-    //Ir a la seccion Items (Presiona q/Q)
-    gotoxy(100, 2);
-    cout<< "Items (Presiona Q)" << endl;
-
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: avatar_tienda_opc_3();break; //Flecha derecha
-		case 75: avatar_tienda_opc_1();break; //Flecha izquierda
-		case 13: 
-			if(*dinero>=1000){
-				*dinero-=1000;
-				*des_avatar2=1;
-				gotoxy(5, 27);
-				cout<<"-> !Has comprado el Avatar 2!"<<endl;
-				gotoxy(8, 28);
-				cout<<"Se ha agregado a tu inventario"<<endl;
-				getch();
-				avatar_tienda_opc_2();
-			}
-			else{	
-				gotoxy(5, 27);
-				cout<<"-> No cuentas con el dinero suficiente"<<endl;
-				gotoxy(8, 28);
-				cout<<"para comprar este avatar :("<<endl;
-				cout<<"\n";
-				getch();
-				avatar_tienda_opc_2();
-			}
-			break; //Enter
-		case 81:obj_tienda_opc_1();break;//Tecla q //Avatares
-		case 113:obj_tienda_opc_1();break;//Tecla Q //Avatares
-		default:avatar_tienda_opc_2(); break;
-	}
-}
-
-//Avatar Tienda opc 3
-void avatar_tienda_opc_3(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	titulo_tienda();
-	//Dinero
-	gotoxy(5, 7);
-	if(*dinero==1){
-		cout<< "Dinero: "<<*dinero<<" moneda"<<endl;
-	} else{
-		cout<< "Dinero: "<<*dinero<<" monedas"<<endl;
-	}
-	
-	mesa_tienda();
-	titulo_avatares_tienda();
-	avatar1(35,12);
-	avatar2(56,12);
-    setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
- 
-	setColor(FOREGROUND_BLUE);
-	avatar3(79,11);
-    setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	descripcion_avatar3();
-	//Color rosado
-	setColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	gotoxy(5, 27);
-	cout<<"+1 Escudo Fractal (c/batalla)      -5 vida"<<endl;
-	gotoxy(5, 28);
-	cout<<"-1 ataque                          +2 pt habilidad"<<endl;
-	//Color blanco
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	
-	//Volver al menu (Presiona 0)
-	gotoxy(91, 1);
-    cout<< "Volver al menu (Presiona 0)" << endl;
-    //Ir a la seccion Items (Presiona q/Q)
-    gotoxy(100, 2);
-    cout<< "Items (Presiona Q)" << endl;
-	
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 48: menu();break; //Volver al menu
-		case 77: avatar_tienda_opc_1();break; //Flecha derecha
-		case 75: avatar_tienda_opc_2();break; //Flecha izquierda
-		case 13: 
-			if(*dinero>=1000){
-				*dinero-=1000;
-				*des_avatar3=1;
-				gotoxy(5, 27);
-				cout<<"-> !Has comprado el Avatar 3!"<<endl;
-				gotoxy(8, 28);
-				cout<<"Se ha agregado a tu inventario"<<endl;
-				getch();
-				avatar_tienda_opc_3();
+			break;
+		case 75:  //Flecha izquierda
+			if(*objTiendaActual==1){
+				*objTiendaActual=3;
+				avatares();
 			}
 			else{
-				gotoxy(5, 27);
-				cout<<"-> No cuentas con el dinero suficiente"<<endl;
-				gotoxy(8, 28);
-				cout<<"para comprar este avatar :("<<endl;
-				cout<<"\n";
-				getch();
-				avatar_tienda_opc_3();
+				*objTiendaActual-=1;
+				avatares();
 			}
-			break; //Enter
-		case 81:obj_tienda_opc_1();break;//Tecla q //Avatares
-		case 113:obj_tienda_opc_1();break;//Tecla Q //Avatares
-		default: avatar_tienda_opc_3(); break;
+			break;
+		case 13: //Enter
+			switch(*objTiendaActual){
+				case 1:
+					if(*dinero>=precioAvatar1){
+						*dinero-=precioAvatar1;
+						*des_avatar1=1;
+						gotoxy(5, 27);
+						cout<<"-> !Has comprado el Avatar 1!"<<endl;
+						gotoxy(8, 28);
+						cout<<"Se ha agregado a tu inventario"<<endl;
+						getch();
+						avatares();
+					}
+					else{
+						gotoxy(5, 27);
+						cout<<"-> No cuentas con el dinero suficiente"<<endl;
+						gotoxy(8, 28);
+						cout<<"para comprar este avatar :("<<endl;
+						cout<<"\n";
+						getch();
+						avatares();
+					}
+					break;
+				case 2:
+					if(*dinero>=precioAvatar2){
+						*dinero-=precioAvatar2;
+						*des_avatar2=1;
+						gotoxy(5, 27);
+						cout<<"-> !Has comprado el Avatar 2!"<<endl;
+						gotoxy(8, 28);
+						cout<<"Se ha agregado a tu inventario"<<endl;
+						getch();
+						avatares();
+					}
+					else{	
+						gotoxy(5, 27);
+						cout<<"-> No cuentas con el dinero suficiente"<<endl;
+						gotoxy(8, 28);
+						cout<<"para comprar este avatar :("<<endl;
+						cout<<"\n";
+						getch();
+						avatares();
+					}
+					break;
+				case 3:
+					if(*dinero>=precioAvatar3){
+						*dinero-=precioAvatar3;
+						*des_avatar3=1;
+						gotoxy(5, 27);
+						cout<<"-> !Has comprado el Avatar 3!"<<endl;
+						gotoxy(8, 28);
+						cout<<"Se ha agregado a tu inventario"<<endl;
+						getch();
+						avatares();
+					}
+					else{
+						gotoxy(5, 27);
+						cout<<"-> No cuentas con el dinero suficiente"<<endl;
+						gotoxy(8, 28);
+						cout<<"para comprar este avatar :("<<endl;
+						cout<<"\n";
+						getch();
+						avatares();
+					}
+					break;
+				default: avatares();break;
+			}
+			break;
+		case 81:*objTiendaActual=1;tienda();break;//Tecla q //Avatares
+		case 113:*objTiendaActual=1;tienda();break;//Tecla Q //Avatares
+		default:menuAvataresTienda();break;
 	}
 }
 
@@ -1215,6 +907,7 @@ void recompensas(){
 					}
 				}
 				break;
+			default: recompensas();break;
 		}
 	} while ((numero<0)&&(numero>3));
 }
@@ -1235,18 +928,10 @@ void configuracion(){
 	    cin >> numero;
 	
 	    switch (numero) {
-	    	case 0:
-	    		menu();
-	    		break;
-	        case 1:
-	        	cambiar_nombre();
-	            break;
-	        case 2:
-	            cambiar_contrasenha();
-	            break;
-	        default:
-	            cout << "Fuera de rango";
-	            break;
+	    	case 0: menu();break;
+	        case 1: cambiar_nombre();break;
+	        case 2:cambiar_contrasenha();break;
+	        default: configuracion();break;
 	    }
 	} while ((numero<0)or(numero>2));
 }
@@ -1269,12 +954,7 @@ void cambiar_contrasenha(){
 	configuracion();
 }
 
-void menu_opc_1();
-void menu_opc_2();
-void menu_opc_3();
-void menu_opc_4();
-void menu_opc_5();
-void menu_opc_6();
+void menuPrincipal();
 
 void menu(){
 	//Verificar atributos de avatar
@@ -1297,160 +977,92 @@ void menu(){
 	if(*exp>=700){
 		*recomp3=1;
 	}
-	menu_opc_1();
-}
-
-//Menu opc 1
-void menu_opc_1(){
-	int tecla;
 	system("CLS");
 	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	texto_titulo();
-	cout << "\n\n";
-	setColor(FOREGROUND_BLUE);
-	cout << "\t1. Modo campanha" << endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout << "\t2. Perfil" <<endl;
-	cout << "\t3. Tienda" <<endl;
-	cout << "\t4. Recompensas" <<endl;
-	cout << "\t5. Configuracion" <<endl;
-	
-	//Se utilizan 2 getch() cuando se quiere usar flechas para evitar el valor basura (224)
-	//Forma de detectar una tecla normal y una flecha sin tener que pedir siempre otro valor (en que caso que no sea flecha)
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 72: menu_opc_5();break; //Flecha arriba
-		case 80: menu_opc_2();break; //Flecha abajo
-		case 13: modo_campana();break; //Enter
-		default: menu_opc_1(); break;
-	}
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);  
+	tituloPrincipal();
+	menuPrincipal();
 }
 
-//Menu opc 2
-void menu_opc_2(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	texto_titulo();
-	cout << "\n\n";
-	cout << "\t1. Modo campanha" << endl;
-	setColor(FOREGROUND_BLUE);
-	cout << "\t2. Perfil" <<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout << "\t3. Tienda" <<endl;
-	cout << "\t4. Recompensas" <<endl;
-	cout << "\t5. Configuracion" <<endl;
-	
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
+void opcionMenu(int opcion){
+	if(*opcMenuActual==opcion){
+		setColor(FOREGROUND_BLUE);
+		switch(opcion){
+			case 1: cout << "\n\t1. Modo campanha" << endl; break;
+			case 2: cout << "\t2. Perfil" <<endl;; break;
+			case 3: cout << "\t3. Tienda" <<endl;; break;
+			case 4: cout << "\t4. Recompensas" <<endl;; break;
+			case 5: cout << "\t5. Configuracion" <<endl;; break;
+			default: opcionMenu(opcion);break;
+		}
 	}
-	//Teclas posibles
-	switch (tecla){
-		case 72: menu_opc_1();break; //Flecha arriba
-		case 80: menu_opc_3();break; //Flecha abajo
-		case 13: perfil();break; //Enter
-		default: menu_opc_2(); break;
+	else{
+		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);  
+		switch(opcion){
+			case 1: cout << "\n\t1. Modo campanha" << endl; break;
+			case 2: cout << "\t2. Perfil" <<endl;; break;
+			case 3: cout << "\t3. Tienda" <<endl;; break;
+			case 4: cout << "\t4. Recompensas" <<endl;; break;
+			case 5: cout << "\t5. Configuracion" <<endl;; break;
+			default: opcionMenu(opcion);break;
+		}
 	}
 }
 
-//Menu opc 3
-void menu_opc_3(){
+void menuPrincipal(){
 	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	texto_titulo();
-	cout << "\n\n";
-	cout << "\t1. Modo campanha" << endl;
-	cout << "\t2. Perfil" <<endl;
-	setColor(FOREGROUND_BLUE);
-	cout << "\t3. Tienda" <<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout << "\t4. Recompensas" <<endl;
-	cout << "\t5. Configuracion" <<endl;
-	
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 72: menu_opc_2();break; //Flecha arriba
-		case 80: menu_opc_4();break; //Flecha abajo
-		case 13: tienda();break; //Enter
-		default: menu_opc_3(); break;
-	}
-}
-
-//Menu opc 4
-void menu_opc_4(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	texto_titulo();
-	cout << "\n\n";
-	cout << "\t1. Modo campanha" << endl;
-	cout << "\t2. Perfil" << endl;
-	cout << "\t3. Tienda" <<endl;
-	setColor(FOREGROUND_BLUE);
-	cout << "\t4. Recompensas" <<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout << "\t5. Configuracion" <<endl;
-	
-	tecla= getch();
-	if(tecla==224){
-		tecla= getch();
-	}
-	//Teclas posibles
-	switch (tecla){
-		case 72: menu_opc_3();break; //Flecha arriba
-		case 80: menu_opc_5();break; //Flecha abajo
-		case 13: recompensas();break; //Enter
-		default: menu_opc_4(); break;
-	}
-}
-
-//Menu opc 5
-void menu_opc_5(){
-	int tecla;
-	system("CLS");
-	fillConsoleBackground(BACKGROUND_CYAN);
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	texto_titulo();
-	cout << "\n\n";
-	cout << "\t1. Modo campanha" << endl;
-	cout << "\t2. Perfil" <<endl;
-	cout << "\t3. Tienda" <<endl;
-	cout << "\t4. Recompensas" <<endl;
-	setColor(FOREGROUND_BLUE);
-	cout << "\t5. Configuracion" <<endl;
-	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	opcionMenu(1);
+	opcionMenu(2);
+	opcionMenu(3);
+	opcionMenu(4);
+	opcionMenu(5);
+	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);  
 
 	tecla= getch();
 	if(tecla==224){
 		tecla= getch();
 	}
+
 	//Teclas posibles
 	switch (tecla){
-		case 72: menu_opc_4();break; //Flecha arriba
-		case 80: menu_opc_1();break; //Flecha abajo
-		case 13: configuracion();break; //Enter
-		default: menu_opc_5(); break;
+		case 72:  //Flecha arriba
+			if(*opcMenuActual==1){ //Para pasar de la primera opción a la última
+				*opcMenuActual=5;
+				menu();
+			}
+			else{
+				*opcMenuActual-=1;
+				menu();
+			}
+			break;
+		case 80:  //Flecha abajo
+			if(*opcMenuActual==5){ //Para pasar de la última opción a la primera
+				*opcMenuActual=1;
+				menu();
+			}
+			else{
+				*opcMenuActual+=1;
+				menu();
+			}
+			break;
+		case 13: //Enter
+			switch(*opcMenuActual){
+				case 1: *opcMenuActual=1;*sectorActual=1;modo_campana();break;
+				case 2: *opcMenuActual=1;perfil();break;
+				case 3: *opcMenuActual=1;tienda();break;
+				case 4: *opcMenuActual=1;recompensas();break;
+				case 5: *opcMenuActual=1;configuracion();break;
+				default: menuPrincipal();break;
+			}
+			break;
+		default: menu(); break;
 	}
 }
 
 void crear_perfil() {
 	setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
     system("CLS");
-	texto_titulo();
+	tituloPrincipal();
     cout << "\n\n\n";
     cout << "\t\t\t\t\t       ";
     setColor(0);
@@ -1467,8 +1079,14 @@ void crear_perfil() {
 
 void carga_variables() {
 	system("title Isla Matemagica");
+	//Opción menu Actual
+	opcMenuActual=&dir_opcMenuActual;
+	//Sector Actual
+	sectorActual=&dir_sectorActual;
 	//Nivel Actual
 	nivelActual=&dir_nivelActual;
+	//Objeto tienda seleccionado Actual
+	objTiendaActual=&dir_objTiendaActual;
 	//Color
 	color=&dir_color;
 	//Avatar

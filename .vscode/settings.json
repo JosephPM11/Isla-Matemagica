@@ -77,7 +77,15 @@
         "xmemory": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "*.tcc": "cpp",
+        "cstdarg": "cpp",
+        "cwctype": "cpp",
+        "deque": "cpp",
+        "memory_resource": "cpp",
+        "random": "cpp",
+        "string_view": "cpp",
+        "numbers": "cpp"
     },
     "c-cpp-compile-run.cpp-compiler": "C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/g++.exe",
     "c-cpp-compile-run.output-location": "../",

@@ -9,51 +9,48 @@
 
 #include "ascii.h"
 #include "sector2.h"
+#include "utilidades_sectores.h"
 using namespace std;
 char respuesta_c[10];
 
 //Color de fondo y texto
 extern const int BACKGROUND_CYAN;
-int numero;
+extern int numero;
 
 //Color
-int *c_color,dir_c_color=0;
+extern int *c_color,dir_c_color;
 //Dinero
-int *p_dinero,p_dir_dinero=0;
+extern int *p_dinero,p_dir_dinero;
 //Exp
-int *p_exp,p_dir_exp=0;
+extern int *p_exp,p_dir_exp;
 //Objetos
-int *p_poci_suma,p_dir_poci_suma=0;
-int *p_poli_poder,p_dir_poli_poder=0;
-int *p_escu_frac,p_dir_escu_frac=0;
+extern int *p_poci_suma,p_dir_poci_suma;
+extern int *p_poli_poder,p_dir_poli_poder;
+extern int *p_escu_frac,p_dir_escu_frac;
 
-int *p_ataque_extra,p_dir_ataque_extra=0;
-int *p_proteccion,p_dir_proteccion=0;
+extern int *p_ataque_extra,p_dir_ataque_extra;
+extern int *p_proteccion,p_dir_proteccion;
 //Habilidades
 	//Ataque critico
-int *p_cant_ataq_crit,p_dir_cant_ataq_crit=2;
+extern int *p_cant_ataq_crit,p_dir_cant_ataq_crit;
 
 //Vida jugador
-int *p_vida_jugador,p_dir_vida_jugador=0;
-		//Vida jugador total (vida() )
-int *vida_total_jugador,dir_vida_total_jugador=0;
+extern int *p_vida_jugador,p_dir_vida_jugador;
+		//Vida jugador total(vida() )
 //Huida jugador
-int *huida,dir_huida=0;
+extern int *huida,dir_huida;
+extern int *vida_total_jugador,dir_vida_total_jugador;
 //Vida enemigo
-int *p_vida_enemigo,p_dir_vida_enemigo=0;
-		//Vida enemigo total (vida() )
-int *vida_total_enemigo,dir_vida_total_enemigo=0;
+extern int *p_vida_enemigo,p_dir_vida_enemigo;
+		//Vida enemigo total(vida() )
+extern int *vida_total_enemigo,dir_vida_total_enemigo;
 //Boss
-int *boss_s1,dir_boss_s1=0;
+extern int *boss_s1; extern int dir_boss_s1;
 
 //Funciones externas enemigos sectores
 extern void enemigo_s2();
 extern void atacar_s2();
 extern void ataque_critico_s2();
-
-//Funciones externas sectores modo campana
-extern void modo_campana_opc_1();
-extern void modo_campana_opc_2();
 
 //Funciones de color de fondo
 extern void fillConsoleBackground(int);
@@ -111,8 +108,12 @@ void atacar_s1(){
 		//Aqui va a regresar al menu de combate
 	}
 }
+
+//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
+/*
 void menu_jugador(int sector);
-void habilidades(int sector);
+void habilidades(int sector); */
+//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
 
 void ataque_critico_s1(){
 	if(*p_cant_ataq_crit<=0){
@@ -211,6 +212,8 @@ void ataque_critico_s1(){
 	}
 }
 
+//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
+/*
 void habilidades(int sector){
 	do{
 		system("CLS");
@@ -455,6 +458,8 @@ void inventario_batalla(int sector){
 	} while ((numero<0)or(numero>3));
 	
 }
+*/
+//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
 
 void enemigo_s1(){
 	//Verificar el color actual
@@ -502,12 +507,8 @@ void enemigo_s1(){
 	
 }
 
+//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
 /*
-GUIARSE CON ESTO PARA PUNTEROS - RECORDAR QUE TAMBIEN SE PONE EN EL MAIN()
-int *fin_s1,*fin_s2,*fin_s3,*fin_s4,*fin_s5;
-int direccion_s1=0,direccion_s2=0,direccion_s3=0,direccion_s4=0,direccion_s5=0;
-*/
-
 void vida(){
 	cout<<"\n  Vida del enemigo: "<<*p_vida_enemigo<<"/"<<*vida_total_enemigo<<endl;
 	cout<<"  Vida del jugador: "<<*p_vida_jugador<<"/"<<*vida_total_jugador<<endl;
@@ -590,7 +591,6 @@ void menu_jugador(int sector){
 					cout<<"Huiste de la batalla..."<<endl;
 					cout<<"\n";
 					system("pause");
-					modo_campana_opc_2();
 				}
 			}
 			//AQUI VAN LOS NUEVOS JEFES
@@ -602,6 +602,8 @@ void menu_jugador(int sector){
 		}
 	} while ((numero<1)or(numero>4));
 }
+*/
+//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
 
 void turno_enemigo_s1(){
 	if(*p_proteccion==0){
