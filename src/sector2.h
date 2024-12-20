@@ -8,6 +8,7 @@
 #include <windows.h>
 
 #include "ascii.h"
+#include "utilidades_sectores.h"
 using namespace std;
 extern char respuesta_c[10];
 
@@ -39,22 +40,23 @@ extern int *p_vida_enemigo,p_dir_vida_enemigo;
 		//Vida enemigo total(vida() )
 extern int *vida_total_enemigo,dir_vida_total_enemigo;
 //Boss
-int *boss_s2,dir_boss_s2=0;
-
-extern void vida();
+extern int *boss_s2,dir_boss_s2;
 
 //Funciones de color de fondo
 extern void fillConsoleBackground(int);
 extern void setColor(int);
 
-//ENFRENTAMIENTO EN EL SECTOR 1
+extern void vida();
+extern void menu_jugador(int sector);
+
+//ENFRENTAMIENTO EN EL SECTOR 2
 void enemigo_s2();
 
 void atacar_s2(){
 	int resultado;
 	system("CLS");
 	enemigo_s2();
-	extern vida();
+	vida();
 	srand(time(NULL));
 	int limite_superior = 100;
 	int limite_inferior = 5;
@@ -98,8 +100,6 @@ void atacar_s2(){
 		//Aqui va a regresar al menu de combate
 	}
 }
-extern void menu_jugador(int sector);
-extern void habilidades(int sector);
 
 void ataque_critico_s2(){
 	if(*p_cant_ataq_crit<=0){
@@ -293,7 +293,6 @@ void batalla_s2(){
 	int turno=0;
 	while((*p_vida_enemigo>0)&&(*p_vida_jugador>0)&&(*huida==0)){
 		system("CLS");
-		
 		enemigo_s2();
 		vida();
 
@@ -360,22 +359,8 @@ void batalla_s2(){
 			system("pause");
 		}
 	}
-	//EL PROGRAMA MUESTRA LA HUIDA PERO NI LO TOMA EN CUENTA!!!
-	if(*huida==1){
-		*huida=0;
-		cout<<"\n";
-		cout<<" Huiste de la batarantalla..."<<endl;
-		cout<<"\n";
-		cout<<"TOAD CABEZÓN";
-		system("pause");
-		system("pause");
-
-		cout<<"TOAD PELON";
-		system("pause");
-	}
 }
 //ENFRENTAMIENTO EN EL SECTOR 2
-
 
 void batallas_s2(int num_batalla,int color,int& vida_jugador,int& dinero,int& suexp,int& poci_suma,int& poli_poder,int& escu_frac){
 	//Color
@@ -420,6 +405,8 @@ void batallas_s2(int num_batalla,int color,int& vida_jugador,int& dinero,int& su
 	vida_total_enemigo=&dir_vida_total_enemigo;
 	//Boss
 	boss_s2=&dir_boss_s2;
+
+	*huida=0;
 	
 	switch(num_batalla){
 		case 1:
@@ -445,8 +432,6 @@ void batallas_s2(int num_batalla,int color,int& vida_jugador,int& dinero,int& su
 		default: cout<<"Fuera de rango"; break;
 	}
 	batalla_s2();
-	cout<<"DEBERIA SALIR ESTO";
-	system("pause");
 	//Pasando valores finales al paso por parametros
 	dinero=*p_dinero;
 	suexp=*p_exp;

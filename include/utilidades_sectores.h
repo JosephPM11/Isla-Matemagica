@@ -9,11 +9,16 @@
 
 #include "ascii.h"
 #include "../src/sector1.h"
+#include "../src/sector2.h"
 using namespace std;
+char respuesta_c[10];
 
 //Color de fondo y texto
 extern const int BACKGROUND_CYAN;
 int numero;
+
+void vida();
+void habilidades(int sector);
 
 //Color
 int *c_color,dir_c_color=0;
@@ -44,6 +49,7 @@ int *p_vida_enemigo,p_dir_vida_enemigo=0;
 int *vida_total_enemigo,dir_vida_total_enemigo=0;
 //Boss
 int *boss_s1,dir_boss_s1=0;
+int *boss_s2,dir_boss_s2=0;
 
 extern void enemigo_s1();
 extern void atacar_s1();
@@ -105,10 +111,13 @@ void menu_jugador(int sector){
 				}
 				else{
 					*huida=1;
+					cout<<"\n";
+					cout<<"Huiste de la batalla..."<<endl;
+					cout<<"\n";
+					system("pause");
 				}
 			}
 			if(sector==2){
-				extern int *boss_s2;
 				if(*boss_s2==1){
 					cout<<"\n";
 					cout<<"Jefe 2 ha olido tus intenciones. No te permitira escapar..."<<endl;
@@ -116,6 +125,7 @@ void menu_jugador(int sector){
 					system("pause");
 				}
 				else{
+					*huida=1;
 					cout<<"\n";
 					cout<<"Huiste de la batalla..."<<endl;
 					cout<<"\n";
@@ -152,14 +162,6 @@ void habilidades(int sector){
 		cin>>numero;
 		switch(numero){
 		case 0:
-			switch(sector){
-				case 1: menu_jugador(1);break;
-				case 2: menu_jugador(2);break;
-				case 3: //menu_jugador(3);break;
-				case 4: //menu_jugador(4);break;
-				case 5: //menu_jugador(5);break;
-				default: habilidades(sector);break;
-			}
 			break;
 		case 1:
 			switch(sector){
@@ -264,32 +266,6 @@ void inventario_batalla(int sector){
 		cin >> numero;
 		switch (numero){
 		case 0:
-			system("CLS");
-			if(sector==1){
-				enemigo_s1();
-				vida();
-				menu_jugador(1);
-			}
-			if(sector==2){
-				enemigo_s2();
-				vida();
-				menu_jugador(2);
-			}
-			if(sector==3){
-				//enemigo_s3();
-				vida();
-				menu_jugador(3);
-			}
-			if(sector==4){
-				//enemigo_s4();
-				vida();
-				menu_jugador(4);
-			}
-			if(sector==5){
-				//enemigo_s5();
-				vida();
-				menu_jugador(5);
-			}
 			break;
 		case 1:
 			if(*p_poci_suma>0){

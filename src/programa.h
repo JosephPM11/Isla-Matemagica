@@ -260,10 +260,7 @@ void mapa_casillas(int sector){
 		case 13: //Enter
 			switch(sector){
 				case 1: batallas_s1(*nivelActual,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac);s1();break;
-				case 2: batallas_s2(*nivelActual,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac);
-				cout<<"PELOTASSSSSSS";
-				system("pause");
-				s2();break;
+				case 2: batallas_s2(*nivelActual,*color,*vida_jugador,*dinero,*exp,*poci_suma,*poli_poder,*escu_frac);s2();break;
 				/*case 3: s3();break;
 				case 4: s4();break;
 				case 5: s5();break;*/

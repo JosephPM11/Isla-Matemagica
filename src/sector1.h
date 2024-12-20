@@ -8,14 +8,9 @@
 #include <windows.h>
 
 #include "ascii.h"
-#include "sector2.h"
 #include "utilidades_sectores.h"
 using namespace std;
-char respuesta_c[10];
-
-//Color de fondo y texto
-extern const int BACKGROUND_CYAN;
-extern int numero;
+extern char respuesta_c[10];
 
 //Color
 extern int *c_color,dir_c_color;
@@ -45,20 +40,17 @@ extern int *p_vida_enemigo,p_dir_vida_enemigo;
 		//Vida enemigo total(vida() )
 extern int *vida_total_enemigo,dir_vida_total_enemigo;
 //Boss
-extern int *boss_s1; extern int dir_boss_s1;
-
-//Funciones externas enemigos sectores
-extern void enemigo_s2();
-extern void atacar_s2();
-extern void ataque_critico_s2();
+extern int *boss_s1,dir_boss_s1;
 
 //Funciones de color de fondo
 extern void fillConsoleBackground(int);
 extern void setColor(int);
 
+extern void vida();
+extern void menu_jugador(int sector);
+
 //ENFRENTAMIENTO EN EL SECTOR 1
 void enemigo_s1();
-void vida();
 
 void atacar_s1(){
 	int resultado;
@@ -108,12 +100,6 @@ void atacar_s1(){
 		//Aqui va a regresar al menu de combate
 	}
 }
-
-//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
-/*
-void menu_jugador(int sector);
-void habilidades(int sector); */
-//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
 
 void ataque_critico_s1(){
 	if(*p_cant_ataq_crit<=0){
@@ -212,255 +198,6 @@ void ataque_critico_s1(){
 	}
 }
 
-//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
-/*
-void habilidades(int sector){
-	do{
-		system("CLS");
-		if(sector==1){
-			enemigo_s1();
-		}
-		if(sector==2){
-			enemigo_s2();
-		}
-		if(sector==3){
-			//enemigo_s3();
-		}
-		if(sector==4){
-			//enemigo_s4();
-		}
-		if(sector==5){
-			//enemigo_s5();
-		}
-		vida();
-		cout<<"  -> Es tu turno"<<endl;
-		cout<<"\n  Que habilidad quieres usar?"<<endl;
-		cout<<"  (Escribe 0 para salir de las habilidades)"<<endl;
-		cout<<"\n     1. Explosion Numerica - Ataque critico ("<<*p_cant_ataq_crit<<"/2)"<<endl;
-				
-		cin >> numero;
-		switch (numero){
-		case 0:
-			if(sector==1){
-				menu_jugador(1);
-			}
-			if(sector==2){
-				menu_jugador(2);
-			}
-			if(sector==3){
-				menu_jugador(3);
-			}
-			if(sector==4){
-				menu_jugador(4);
-			}
-			if(sector==5){
-				menu_jugador(5);
-			}
-			break;
-		case 1:
-			if(sector==1){
-				ataque_critico_s1();
-			}
-			if(sector==2){
-				ataque_critico_s2();
-			}
-			if(sector==3){
-				//ataque_critico_s3();
-			}
-			if(sector==4){
-				//ataque_critico_s4();
-			}
-			if(sector==5){
-				//ataque_critico_s5();
-			}
-			break;
-		default:
-		    cout << "Fuera de rango";
-		}
-	} while ((numero!=0)&&(numero!=1));
-}
-
-
-void pocion_suma(int sector){
-	system("CLS");
-	if(sector==1){
-		enemigo_s1();
-	}
-	if(sector==2){
-		enemigo_s2();
-	}
-	if(sector==3){
-		//enemigo_s3();
-	}
-	if(sector==4){
-		//enemigo_s4();
-	}
-	if(sector==5){
-		//enemigo_s5();
-	}
-	vida();
-	srand(time(NULL));
-		int mayor_vida = 3;
-		int menor_vida = 1;
-		int vida_extra = menor_vida + rand()% (mayor_vida + 1 - menor_vida);
-		*p_vida_jugador+=vida_extra;
-		cout<<"\n    Has utilizado una Pocion de sumas. !Has recuperado "<<vida_extra<<" de vida!"<<endl;
-		cout<<"\n";
-		*p_poci_suma-=1;
-		system("pause");
-}
-
-
-void poliedro_poder(int sector){
-	system("CLS");
-	if(sector==1){
-		enemigo_s1();
-	}
-	if(sector==2){
-		enemigo_s2();
-	}
-	if(sector==3){
-		//enemigo_s3();
-	}
-	if(sector==4){
-		//enemigo_s4();
-	}
-	if(sector==5){
-		//enemigo_s5();
-	}
-	vida();
-	int mayor_ataque = 2;
-	int menor_ataque = 1;
-	*p_ataque_extra = menor_ataque + rand()% (mayor_ataque + 1 - menor_ataque);
-	cout<<"\n    Has utilizado una Poliedro de Poder. !Tu proximo ataque aumenta en "<<*p_ataque_extra<<"!"<<endl;
-	cout<<"\n";
-	*p_poli_poder-=1;
-	system("pause");
-}
-
-void escudo_fractal(int sector){
-	system("CLS");
-	if(sector==1){
-		enemigo_s1();
-	}
-	if(sector==2){
-		enemigo_s2();
-	}
-	if(sector==3){
-		//enemigo_s3();
-	}
-	if(sector==4){
-		//enemigo_s4();
-	}
-	if(sector==5){
-		//enemigo_s5();
-	}
-	vida();
-	int mayor_proteccion = 2;
-	int menor_proteccion = 1;
-	*p_proteccion = menor_proteccion + rand()% (mayor_proteccion + 1 - menor_proteccion);
-	
-	if(*p_proteccion==1){
-		cout<<"\n    Has utilizado un Escudo Fractal. !El enemigo no puede atacarte por "<<*p_proteccion<<" turno!"<<endl;
-		cout<<"\n";
-		*p_escu_frac-=1;
-		system("pause");
-	}
-	else{
-		cout<<"\n    Has utilizado un Escudo Fractal. !El enemigo no puede atacarte por "<<*p_proteccion<<" turnos!"<<endl;
-		cout<<"\n";
-		*p_escu_frac-=1;
-		system("pause");
-	}
-}
-
-void inventario_batalla(int sector){
-	system("CLS");
-	cout<<"\n----------INVENTARIO-----------"<<endl;
-	cout<<"\n";
-	cout<<"1. Pocion de sumas - Cura de 1 a 3 de vida (x"<<*p_poci_suma<<")"<<endl;
-	cout<<"2. Poliedro de poder - Aumenta tu ataque de 1 a 2 (x"<<*p_poli_poder<<")"<<endl;
-	cout<<"3. Escudo fractal - Te protege de 1 a 2 ataques (x"<<*p_escu_frac<<")"<<endl;
-	cout<<"\n";
-	cout<<"---------------------------------------"<<endl;
-
-	do{
-		cout<<"(Escribe 0 para salir del inventario)"<<endl;
-		cin >> numero;
-		switch (numero){
-		case 0:
-			system("CLS");
-			if(sector==1){
-				enemigo_s1();
-				vida();
-				menu_jugador(1);
-			}
-			if(sector==2){
-				enemigo_s2();
-				vida();
-				menu_jugador(2);
-			}
-			if(sector==3){
-				//enemigo_s3();
-				vida();
-				menu_jugador(3);
-			}
-			if(sector==4){
-				//enemigo_s4();
-				vida();
-				menu_jugador(4);
-			}
-			if(sector==5){
-				//enemigo_s5();
-				vida();
-				menu_jugador(5);
-			}
-			break;
-		case 1:
-			if(*p_poci_suma>0){
-				pocion_suma(sector);
-			}
-			else{
-				cout<<"\n";
-				cout<<"No tienes este objeto"<<endl;
-				cout<<"\n";
-				system("pause");
-				inventario_batalla(sector);
-			}
-			break;
-		case 2:
-			if(*p_poli_poder>0){
-				poliedro_poder(sector);
-			}
-			else{
-				cout<<"\n";
-				cout<<"No tienes este objeto"<<endl;
-				cout<<"\n";
-				system("pause");
-				inventario_batalla(sector);
-			}
-			break;
-		case 3:
-			if(*p_escu_frac>0){
-				escudo_fractal(sector);
-			}
-			else{
-				cout<<"\n";
-				cout<<"No tienes este objeto"<<endl;
-				cout<<"\n";
-				system("pause");
-				inventario_batalla(sector);
-			}
-			break;
-		default:
-		    cout << "Fuera de rango";
-		}
-	} while ((numero<0)or(numero>3));
-	
-}
-*/
-//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
-
 void enemigo_s1(){
 	//Verificar el color actual
 	if(*c_color==1){
@@ -503,107 +240,7 @@ void enemigo_s1(){
 		subditoNumerico();
 		setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
-
-	
 }
-
-//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
-/*
-void vida(){
-	cout<<"\n  Vida del enemigo: "<<*p_vida_enemigo<<"/"<<*vida_total_enemigo<<endl;
-	cout<<"  Vida del jugador: "<<*p_vida_jugador<<"/"<<*vida_total_jugador<<endl;
-	cout<<"--------------------------------------------------------------------------------------------------------------"<<endl;
-}
-
-void menu_jugador(int sector){
-	do{
-		system("CLS");
-		if(sector==1){
-			enemigo_s1();
-		}
-		if(sector==2){
-			enemigo_s2();
-		}
-		if(sector==3){
-			//enemigo_s3();
-		}
-		if(sector==4){
-			//enemigo_s4();
-		}
-		if(sector==5){
-			//enemigo_s5();
-		}
-		vida();
-		cout<<"  -> Es tu turno"<<endl;
-		cout<<"\n  Que quieres hacer?"<<endl;
-		cout<<"     1. Atacar"<<endl;
-		cout<<"     2. Habilidades"<<endl;
-		cout<<"     3. Inventario"<<endl;
-		cout<<"     4. Huir"<<endl;
-				
-		cin >> numero;
-		switch (numero){
-		case 1:
-			if(sector==1){
-				atacar_s1();
-			}
-			if(sector==2){
-				atacar_s2();
-			}
-			if(sector==3){
-				//atacar_s3();
-			}
-			if(sector==4){
-				//atacar_s4();
-			}
-			if(sector==5){
-				//atacar_s5();
-			}
-			break;
-		case 2:
-			habilidades(sector);
-			break;
-		case 3:
-			inventario_batalla(sector);
-			break;
-		case 4:
-			if(sector==1){
-				if(*boss_s1==1){
-					cout<<"\n";
-					cout<<"Numerion ha olido tus intenciones. No te permitira escapar..."<<endl;
-					cout<<"\n";
-					system("pause");
-				}
-				else{
-					*huida=1;
-				}
-			}
-			if(sector==2){
-				extern int *boss_s2;
-				if(*boss_s2==1){
-					cout<<"\n";
-					cout<<"Jefe 2 ha olido tus intenciones. No te permitira escapar..."<<endl;
-					cout<<"\n";
-					system("pause");
-				}
-				else{
-					cout<<"\n";
-					cout<<"Huiste de la batalla..."<<endl;
-					cout<<"\n";
-					system("pause");
-				}
-			}
-			//AQUI VAN LOS NUEVOS JEFES
-			//PONER CUANDO TENGA PUNTEROS *boss_s3,*boss_s4...
-			break;
-
-		default:
-		    cout << "Fuera de rango"; break;
-		}
-	} while ((numero<1)or(numero>4));
-}
-*/
-//ESTO YA NO VA ACÁ, SOLO IRIA EN UTILIDADES
 
 void turno_enemigo_s1(){
 	if(*p_proteccion==0){
@@ -656,7 +293,6 @@ void batalla_s1(){
 	int turno=0;
 	while((*p_vida_enemigo>0)&&(*p_vida_jugador>0)&&(*huida==0)){
 		system("CLS");
-		
 		enemigo_s1();
 		vida();
 
@@ -723,16 +359,8 @@ void batalla_s1(){
 			system("pause");
 		}
 	}
-	if(*huida==1){
-		*huida=0;
-		cout<<"\n";
-		cout<<" Huiste de la batalla..."<<endl;
-		cout<<"\n";
-		system("pause");
-	}
 }
 //ENFRENTAMIENTO EN EL SECTOR 1
-
 
 void batallas_s1(int num_batalla,int color,int& vida_jugador,int& dinero,int& suexp,int& poci_suma,int& poli_poder,int& escu_frac){
 	//Color
@@ -777,6 +405,8 @@ void batallas_s1(int num_batalla,int color,int& vida_jugador,int& dinero,int& su
 	vida_total_enemigo=&dir_vida_total_enemigo;
 	//Boss
 	boss_s1=&dir_boss_s1;
+
+	*huida=0;
 	
 	switch(num_batalla){
 		case 1:
