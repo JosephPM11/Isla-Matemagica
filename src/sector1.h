@@ -60,8 +60,8 @@ void atacar_s1(){
 	srand(time(NULL));
 	int limite_superior = 100;
 	int limite_inferior = 5;
-	int num_random1 = 1 + rand()% (limite_superior + 1 - limite_inferior);
-	int num_random2 = 1 + rand()% (limite_superior + 1 - limite_inferior);
+	int num_random1 = limite_inferior + rand()% (limite_superior + 1 - limite_inferior);
+	int num_random2 = limite_inferior + rand()% (limite_superior + 1 - limite_inferior);
 	cout<<"  -> Vas a atacar"<<endl;
 	cout<<"\n----Resuelve este ejercicio para poder atacar-----"<<endl;
 	cout<<"\n  ¿Cuanto es "<<num_random1<<" + "<<num_random2<<"?"<<endl;
@@ -75,7 +75,7 @@ void atacar_s1(){
 		srand(time(NULL));
 		int mayor_ataque = 3;
 		int menor_ataque = 1;
-		int ataque = 1 + rand()% (mayor_ataque + 1 - menor_ataque);
+		int ataque = menor_ataque + rand()% (mayor_ataque + 1 - menor_ataque);
 		ataque+=*p_ataque_extra;
 		*p_ataque_extra=0;
 		if(*boss_s1==1){
@@ -248,7 +248,7 @@ void turno_enemigo_s1(){
 			srand(time(NULL));
 			int mayor_ataque = 5;
 			int menor_ataque = 3;
-			int ataque = 1 + rand()% (mayor_ataque + 1 - menor_ataque);
+			int ataque = menor_ataque + rand()% (mayor_ataque + 1 - menor_ataque);
 			cout<<"  -> Es el turno de Numerion"<<endl;
 			cout<<"\n  Numerion te ha atacado inflingiendote "<<ataque<<" de danho"<<endl;
 			cout<<"\n";
@@ -259,7 +259,7 @@ void turno_enemigo_s1(){
 			srand(time(NULL));
 			int mayor_ataque = 3;
 			int menor_ataque = 1;
-			int ataque = 1 + rand()% (mayor_ataque + 1 - menor_ataque);
+			int ataque = menor_ataque + rand()% (mayor_ataque + 1 - menor_ataque);
 			cout<<"  -> Es el turno del enemigo"<<endl;
 			cout<<"\n  El enemigo te ha atacado inflingiendote "<<ataque<<" de danho"<<endl;
 			cout<<"\n";
